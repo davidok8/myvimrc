@@ -12,10 +12,6 @@ call vundle#begin()
 
   " For better looking ViM status.
   Plugin 'Lokaltog/vim-powerline'
-  " Autocompletion.
-  Plugin 'Valloric/YouCompleteMe'
-  " C/C++/Objective-C code formatting.
-  Plugin 'rhysd/vim-clang-format'
   " Tree navigation for file browsing
   Plugin 'scrooloose/nerdtree'
   " Integration with Git.
@@ -24,6 +20,13 @@ call vundle#begin()
   Plugin 'plasticboy/vim-markdown'
   " Full path fuzz file, buffer, mru, tag, ... finder.
   Plugin 'kien/ctrlp.vim'
+
+  if has("unix")
+    " Autocompletion.
+    Plugin 'Valloric/YouCompleteMe'
+    " C/C++/Objective-C code formatting.
+    Plugin 'rhysd/vim-clang-format'
+  endif
 call vundle#end()
 
 
@@ -49,15 +52,21 @@ set hid
 
 set t_Co=256
 " Set color scheme
-colorscheme mustang
-"set background=dark
+colorscheme molokai
 
 " Set extra options when running in GUI mode
 if has("gui_running")
   set guioptions-=T
   set guioptions+=e
   set guitablabel=%M\ %t
-  set guifont=Monospace\ 9
+
+  if has("gui_gtk2")
+    set guifont=Monospace\ 9
+  elseif has("gui_macvim")
+    set guifont=Menlo\ Regular:h14
+  elseif has("gui_win32")
+    set guifont=Consolas:h10:cANSI
+  endif
 endif
 
 " Enable syntax highlighting

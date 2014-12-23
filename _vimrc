@@ -11,15 +11,24 @@ call vundle#begin()
   " Secondly add other plugins.
 
   " For better looking ViM status.
-  Plugin 'Lokaltog/vim-powerline'
-  " Tree navigation for file browsing
+  Plugin 'bling/vim-airline'
+  " Tree navigation for file browsing.
   Plugin 'scrooloose/nerdtree'
+  " Simple motions in vim.
+  Plugin 'Lokaltog/vim-easymotion'
   " Integration with Git.
   Plugin 'tpope/vim-fugitive'
-  " Markdown
+  " Markdown.
   Plugin 'plasticboy/vim-markdown'
   " Full path fuzz file, buffer, mru, tag, ... finder.
   Plugin 'kien/ctrlp.vim'
+  " Fast HMTL editing.
+  Plugin 'mattn/emmet-vim'
+  " Javascript support.
+  Plugin 'jelera/vim-javascript-syntax'
+  Plugin 'pangloss/vim-javascript'
+  Plugin 'kchmck/vim-coffee-script'
+
 
   if has("unix")
     " Autocompletion.
@@ -65,7 +74,7 @@ if has("gui_running")
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
-    set guifont=Consolas:h10:cANSI
+    set guifont=Consolas:h13:cANSI
   endif
 endif
 

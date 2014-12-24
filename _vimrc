@@ -16,6 +16,10 @@ call vundle#begin()
   Plugin 'scrooloose/nerdtree'
   " Simple motions in vim.
   Plugin 'Lokaltog/vim-easymotion'
+  " To automatically enclose code within parentheses, quotes, or whatever.
+  Plugin 'tpope/vim-surround'
+  " To highlight indent levels in ViM.
+  Plugin 'nathanaelkane/vim-indent-guides'
   " Integration with Git.
   Plugin 'tpope/vim-fugitive'
   " Markdown.
@@ -28,6 +32,7 @@ call vundle#begin()
   Plugin 'jelera/vim-javascript-syntax'
   Plugin 'pangloss/vim-javascript'
   Plugin 'kchmck/vim-coffee-script'
+  Plugin 'marijnh/tern_for_vim'
 
 
   if has("unix")

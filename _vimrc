@@ -33,6 +33,10 @@ call vundle#begin()
   Plugin 'pangloss/vim-javascript'
   Plugin 'kchmck/vim-coffee-script'
   Plugin 'marijnh/tern_for_vim'
+  " Enhanced tab.
+  Plugin 'ervandew/supertab'
+  " Python auto-completion.
+  Plugin 'davidhalter/jedi-vim'
 
 
   if has("unix")

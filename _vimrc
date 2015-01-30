@@ -70,7 +70,7 @@ set hid
 
 set t_Co=256
 " Set color scheme
-colorscheme molokai
+colorscheme pyte
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -79,7 +79,7 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2")
-    set guifont=Monospace\ 11
+    set guifont=Monospace\ 9.5
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
@@ -87,9 +87,21 @@ if has("gui_running")
   endif
 endif
 
+
 " Enable syntax highlighting
 syntax enable
 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
 
 
 " ==============================================================================
@@ -265,3 +277,7 @@ autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 " Toggle auto formatting.
 nmap <Leader>C :ClangFormatAutoToggle<CR>
+
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>

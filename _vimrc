@@ -37,6 +37,8 @@ call vundle#begin()
   Plugin 'ervandew/supertab'
   " Python auto-completion.
   Plugin 'davidhalter/jedi-vim'
+  " For quick string search
+  Plugin 'rking/ag.vim'
 
 
   if has("unix")
@@ -277,7 +279,3 @@ autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 " Toggle auto formatting.
 nmap <Leader>C :ClangFormatAutoToggle<CR>
-
-
-" bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>

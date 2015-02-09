@@ -39,6 +39,8 @@ call vundle#begin()
   Plugin 'davidhalter/jedi-vim'
   " For quick string search
   Plugin 'rking/ag.vim'
+  " CMake integration.
+  Plugin 'jalcine/cmake.vim'
 
 
   if has("unix")

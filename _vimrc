@@ -74,7 +74,11 @@ set hid
 
 set t_Co=256
 " Set color scheme
-colorscheme pyte
+if has("gui_running")
+  colorscheme molokai
+else
+  colorscheme pyte
+endif
 
 " Set extra options when running in GUI mode
 if has("gui_running")

@@ -35,8 +35,10 @@ call vundle#begin()
   Plugin 'marijnh/tern_for_vim'
   " Enhanced tab.
   Plugin 'ervandew/supertab'
-  " Python auto-completion.
+  " Python support.
   Plugin 'davidhalter/jedi-vim'
+  Plugin 'hynek/vim-python-pep8-indent'
+  Plugin 'nvie/vim-flake8'
   " For quick string search
   Plugin 'rking/ag.vim'
   " CMake integration.
@@ -73,12 +75,6 @@ set ruler
 set hid
 
 set t_Co=256
-" Set color scheme
-if has("gui_running")
-  colorscheme molokai
-else
-  colorscheme pyte
-endif
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -98,6 +94,13 @@ endif
 
 " Enable syntax highlighting
 syntax enable
+
+" Set color scheme
+if has("gui_running")
+  colorscheme molokai
+else
+  colorscheme pyte
+endif
 
 " The Silver Searcher
 if executable('ag')

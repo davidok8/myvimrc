@@ -4,8 +4,16 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+if has("unix")
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
+else
+  set rtp+=~/vimfiles/bundle/Vundle.vim
+  let path='~/vimfiles/bundle'
+  call vundle#begin(path)
+endif
+
+"vundle#begin()
   " Firstly let Vundle manage the plugins.
   Plugin 'gmarik/Vundle.vim'
   " Secondly add other plugins.
@@ -43,7 +51,6 @@ call vundle#begin()
   Plugin 'rking/ag.vim'
   " CMake integration.
   Plugin 'jalcine/cmake.vim'
-
 
   if has("unix")
     " Autocompletion.
@@ -87,7 +94,7 @@ if has("gui_running")
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
-    set guifont=Consolas:h13:cANSI
+    set guifont=Consolas:h11:cANSI
   endif
 endif
 
@@ -135,17 +142,17 @@ set mouse=a
 " ==============================================================================
 " Search options.
 "
-" Ignore case when searching
+" Ignore case when searching.
 set ignorecase
-" When searching try to be smart about cases 
+" When searching try to be smart about cases.
 set smartcase
-" Highlight search results
+" Highlight search results.
 set hlsearch
-" Makes search act like search in modern browsers
+" Makes search act like search in modern browsers.
 set incsearch
-" Don't redraw while executing macros (good performance config)
+" Don't redraw while executing macros (good performance config).
 set lazyredraw
-" For regular expressions turn magic on
+" For regular expressions turn magic on.
 set magic
 
 

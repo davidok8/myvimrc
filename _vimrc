@@ -50,7 +50,6 @@ endif
   " CMake integration.
   Plugin 'jalcine/cmake.vim'
 
-
   if has("unix")
     " Autocompletion.
     Plugin 'Valloric/YouCompleteMe'
@@ -99,7 +98,7 @@ if has("gui_running")
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
-    set guifont=Consolas:h13:cANSI
+    set guifont=Consolas:h11:cANSI
   endif
 endif
 

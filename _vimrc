@@ -18,6 +18,8 @@ endif
   Plugin 'gmarik/Vundle.vim'
   " Secondly add other plugins.
 
+  " Solarized colorscheme.
+  Plugin 'altercation/vim-colors-solarized'
   " For better looking ViM status.
   Plugin 'bling/vim-airline'
   " Tree navigation for file browsing.
@@ -47,6 +49,7 @@ endif
   Plugin 'davidhalter/jedi-vim'
   Plugin 'hynek/vim-python-pep8-indent'
   Plugin 'nvie/vim-flake8'
+  Plugin 'jmcantrell/vim-virtualenv'
   " For quick string search
   Plugin 'rking/ag.vim'
   " CMake integration.
@@ -81,8 +84,6 @@ set ruler
 " A buffer becomes hidden when it is abandoned
 set hid
 
-set t_Co=256
-
 " Set extra options when running in GUI mode
 if has("gui_running")
   set guioptions-=T
@@ -103,10 +104,12 @@ endif
 syntax enable
 
 " Set color scheme
+set background=light
 if has("gui_running")
-  colorscheme molokai
+  colorscheme solarized
 else
-  colorscheme pyte
+  set t_Co=256
+  let g:solarized_termcolors=256
 endif
 
 " The Silver Searcher
@@ -237,7 +240,7 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-" Specify the behavior when switching between buffers 
+" Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -264,7 +267,7 @@ set laststatus=2
 
 " ==============================================================================
 " => C++ formatting options
-" 
+"
 set cindent
 set cino+=(0,W2,g0,i-s,:0
 set foldmethod=syntax
@@ -277,6 +280,11 @@ let g:clang_format#style_options = {
 \ "Standard" : "C++11",
 \ "BreakBeforeBraces" : "Stroustrup" }
 
+
+" ==============================================================================
+" => Python3 and Jedi
+"
+"let g:jedi#force_py_version = 2
 
 
 " ==============================================================================

@@ -52,8 +52,6 @@ endif
   Plugin 'jmcantrell/vim-virtualenv'
   " For quick string search
   Plugin 'rking/ag.vim'
-  " CMake integration.
-  Plugin 'jalcine/cmake.vim'
 
   if has("unix")
     " Autocompletion.
@@ -93,7 +91,7 @@ if has("gui_running")
   if has("gui_gtk2")
     set guifont=Monospace\ 9.5
   elseif has("gui_macvim")
-    set guifont=Menlo\ Regular:h14
+    set guifont=Menlo\ Regular:h10
   elseif has("gui_win32")
     set guifont=Consolas:h11:cANSI
   endif

@@ -52,8 +52,9 @@ endif
   Plugin 'jmcantrell/vim-virtualenv'
   " For quick string search
   Plugin 'rking/ag.vim'
-  " CMake integration.
-  Plugin 'jalcine/cmake.vim'
+
+  " Syntax checker
+  Plugin 'scrooloose/syntastic'
 
   if has("unix")
     " Autocompletion.
@@ -282,9 +283,22 @@ let g:clang_format#style_options = {
 
 
 " ==============================================================================
-" => Python3 and Jedi
+" => Jedi-vim
 "
-"let g:jedi#force_py_version = 2
+let g:jedi#force_py_version = 3
+let g:neocomplcache_enable_at_startup = 1
+if !exists('g:neocomplcache_omni_functions')
+  let g:neocomplcache_omni_functions = {}
+endif
+let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
+let g:jedi#popup_on_dot = 0
+
+
+" ==============================================================================
+" => Vim-flake8
+"
+autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>
+
 
 
 " ==============================================================================

@@ -48,7 +48,6 @@ endif
   " Python support.
   Plugin 'davidhalter/jedi-vim'
   Plugin 'hynek/vim-python-pep8-indent'
-  Plugin 'nvie/vim-flake8'
   Plugin 'jmcantrell/vim-virtualenv'
   " For quick string search
   Plugin 'rking/ag.vim'

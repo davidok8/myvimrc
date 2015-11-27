@@ -93,7 +93,7 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2")
-    set guifont=Inconsolata\ 9.5
+    set guifont=Inconsolata\ 9
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
@@ -246,7 +246,7 @@ let g:clang_format#style_options = {
 " ==============================================================================
 " => Jedi-vim
 "
-let g:jedi#force_py_version = 3
+"let g:jedi#force_py_version = 3
 let g:neocomplcache_enable_at_startup = 1
 if !exists('g:neocomplcache_omni_functions')
   let g:neocomplcache_omni_functions = {}
@@ -303,6 +303,7 @@ autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>
 "
 " ==============================================================================
 " Tree navigation
+let NERDTreeIgnore=['\.pyc$']
 map <S-Tab> :NERDTreeToggle<CR>
 " Auto-completion
 map <F2> :YcmCompleter GoToDefinition<CR>

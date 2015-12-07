@@ -228,36 +228,7 @@ set laststatus=2
 
 
 " ==============================================================================
-" => C++ formatting options
-"
-set cindent
-set cino+=(0,W2,g0,i-s,:0
-set foldmethod=syntax
-set textwidth=80
-
-let g:clang_format#style_options = {
-      \ "AccessModifierOffset" : -4,
-      \ "AllowShortIfStatementsOnASingleLine" : "true",
-      \ "AlwaysBreakTemplateDeclarations" : "true",
-      \ "Standard" : "C++11",
-      \ "BreakBeforeBraces" : "Stroustrup" }
-
-
-" ==============================================================================
-" => Jedi-vim
-"
-"let g:jedi#force_py_version = 3
-let g:neocomplcache_enable_at_startup = 1
-if !exists('g:neocomplcache_omni_functions')
-  let g:neocomplcache_omni_functions = {}
-endif
-let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
-let g:jedi#popup_on_dot = 0
-
-
-" ==============================================================================
 " => Keybindings
-"
 "
 " => Moving around, tabs, windows and buffers
 "
@@ -284,42 +255,66 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-"
-"
-" ==============================================================================
-" => Visual mode related
-"
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
-"
-"
-" ==============================================================================
-" => Vim-flake8
-"
-autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>
-"
-"
-" ==============================================================================
+
 " Tree navigation
 let NERDTreeIgnore=['\.pyc$']
 map <S-Tab> :NERDTreeToggle<CR>
+
 " Auto-completion
 map <F2> :YcmCompleter GoToDefinition<CR>
-"
-"
+
 " Search for the word under the cursor.
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+
+
+" ==============================================================================
+" => C++ formatting options
 "
+set cindent
+set cino+=(0,W2,g0,i-s,:0
+set foldmethod=syntax
+set textwidth=80
+
+let g:clang_format#style_options = {
+      \ "AccessModifierOffset" : -4,
+      \ "AllowShortIfStatementsOnASingleLine" : "true",
+      \ "AlwaysBreakTemplateDeclarations" : "true",
+      \ "Standard" : "C++11",
+      \ "BreakBeforeBraces" : "Stroustrup" }
+
 " C++ editing
 "
 " Map to <Leader>cf in C++ code
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-"
+
 " If you install vim-operator-user
 autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
-"
+
 " Toggle auto formatting.
-nmap <Leader>C :ClangFormatAutoToggle<CR>
+autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
+
+
+
+" ==============================================================================
+" Python configuration
+"
+" => Indentation.
+autocmd FileType python setlocal foldmethod=indent
+
+" => Jedi-vim
+let g:jedi#force_py_version = 3
+let g:neocomplcache_enable_at_startup = 1
+if !exists('g:neocomplcache_omni_functions')
+  let g:neocomplcache_omni_functions = {}
+endif
+let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
+let g:jedi#popup_on_dot = 0
+
+" => Vim-flake8
+autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>

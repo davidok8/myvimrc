@@ -93,7 +93,7 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2")
-    set guifont=Inconsolata\ 9.5
+    set guifont=Inconsolata\ 9
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
@@ -261,6 +261,7 @@ vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
 " Tree navigation
+let NERDTreeIgnore=['\.pyc$']
 map <S-Tab> :NERDTreeToggle<CR>
 
 " Auto-completion

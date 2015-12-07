@@ -305,7 +305,7 @@ autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
 " Python configuration
 "
 " => Indentation.
-autocmd FileType python setlocal foldmethod=syntax
+autocmd FileType python setlocal foldmethod=indent
 
 " => Jedi-vim
 let g:jedi#force_py_version = 3

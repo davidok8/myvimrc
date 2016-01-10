@@ -57,6 +57,9 @@ endif
   " Syntax checker
   Plugin 'scrooloose/syntastic'
 
+  " Conque-GDB
+  Plugin 'vim-scripts/Conque-GDB'
+
   if has("unix")
     " Autocompletion.
     Plugin 'Valloric/YouCompleteMe'
@@ -93,13 +96,14 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2")
-    set guifont=Inconsolata\ 8.5
+    set guifont=Roboto\ Mono\ for\ Powerline\ Regular\ 9
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
     set guifont=Consolas:h11:cANSI
   endif
 endif
+let g:airline_powerline_fonts=1
 
 
 " Enable syntax highlighting
@@ -264,20 +268,19 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 let NERDTreeIgnore=['\.pyc$']
 map <S-Tab> :NERDTreeToggle<CR>
 
-" Auto-completion
-map <F2> :YcmCompleter GoToDefinition<CR>
-
 " Search for the word under the cursor.
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 
 
 " ==============================================================================
-" => C++ formatting options
-"
+" C++ configuration.
+
+" => Editing options.
 set cindent
 set cino+=(0,W2,g0,i-s,:0
 set foldmethod=syntax
+set nofoldenable
 set textwidth=80
 
 let g:clang_format#style_options = {
@@ -287,17 +290,19 @@ let g:clang_format#style_options = {
       \ "Standard" : "C++11",
       \ "BreakBeforeBraces" : "Stroustrup" }
 
-" C++ editing
-"
 " Map to <Leader>cf in C++ code
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-
 " If you install vim-operator-user
 autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
-
 " Toggle auto formatting.
 autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
+autocmd FileType c,cpp,objc nnoremap <Leader>jd :YcmCompleter GoTo<CR>
+
+" => GDB integration.
+let g:ConqueTerm_Color = 2
+let g:ConqueTerm_CloseOnEnd = 1
+let g:ConqueTerm_StartMessages = 0
 
 
 
@@ -306,9 +311,10 @@ autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
 "
 " => Indentation.
 autocmd FileType python setlocal foldmethod=indent
+autocmd FileType python setlocal textwidth=79
 
 " => Jedi-vim
-let g:jedi#force_py_version = 3
+"let g:jedi#force_py_version = 3
 let g:neocomplcache_enable_at_startup = 1
 if !exists('g:neocomplcache_omni_functions')
   let g:neocomplcache_omni_functions = {}

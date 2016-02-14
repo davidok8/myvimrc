@@ -1,72 +1,82 @@
 " ==============================================================================
-" Setup Vundle package.
+" Setup plugins
 "
-set nocompatible
 filetype off
 
 if has("unix")
-  set rtp+=~/.vim/bundle/Vundle.vim
-  call vundle#begin()
+  call plug#begin('~/.vim/plugged')
 else
-  set rtp+=~/vimfiles/bundle/Vundle.vim
-  let path='~/vimfiles/bundle'
-  call vundle#begin(path)
+  call plug#begin('~/vimfiles/plugged')
 endif
 
-"vundle#begin()
-  " Firstly let Vundle manage the plugins.
-  Plugin 'gmarik/Vundle.vim'
-  " Secondly add other plugins.
+"call plug#begin()
+  " The following replaces 'set nocompatible'
+  Plug 'tpope/vim-sensible'
 
   " Solarized colorscheme.
-  Plugin 'altercation/vim-colors-solarized'
+  Plug 'altercation/vim-colors-solarized'
   " For better looking ViM status.
-  Plugin 'bling/vim-airline'
-  " Tree navigation for file browsing.
-  Plugin 'scrooloose/nerdtree'
-  " Simple motions in vim.
-  Plugin 'Lokaltog/vim-easymotion'
-  " To automatically enclose code within parentheses, quotes, or whatever.
-  Plugin 'tpope/vim-surround'
+  Plug 'bling/vim-airline'
   " To highlight indent levels in ViM.
-  Plugin 'nathanaelkane/vim-indent-guides'
-  " Integration with Git.
-  Plugin 'tpope/vim-fugitive'
-  " Markdown.
-  Plugin 'plasticboy/vim-markdown'
+  Plug 'nathanaelkane/vim-indent-guides'
+
+  " Tree navigation for file browsing.
+  Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   " Full path fuzz file, buffer, mru, tag, ... finder.
-  Plugin 'kien/ctrlp.vim'
-  " Fast HMTL editing.
-  Plugin 'mattn/emmet-vim'
-  " Javascript support.
-  Plugin 'jelera/vim-javascript-syntax'
-  Plugin 'pangloss/vim-javascript'
-  Plugin 'kchmck/vim-coffee-script'
-  Plugin 'marijnh/tern_for_vim'
-  " Enhanced tab.
-  Plugin 'ervandew/supertab'
-  " Python support.
-  Plugin 'davidhalter/jedi-vim'
-  Plugin 'hynek/vim-python-pep8-indent'
-  Plugin 'jmcantrell/vim-virtualenv'
+  Plug 'kien/ctrlp.vim'
   " For quick string search
-  Plugin 'rking/ag.vim'
+  Plug 'rking/ag.vim'
+  " Enhanced tab.
+  Plug 'ervandew/supertab'
+  " Simple motions in vim.
+  Plug 'easymotion/vim-easymotion'
+  " Integration with Git.
+  Plug 'tpope/vim-fugitive'
+
+  " To automatically enclose code within parentheses, quotes, or whatever.
+  Plug 'tpope/vim-surround'
+
+  " Markdown.
+  Plug 'plasticboy/vim-markdown'
+  " Fast HMTL editing.
+  Plug 'mattn/emmet-vim'
+
+  " Javascript support.
+  Plug 'jelera/vim-javascript-syntax', { 'for': ['html', 'javascript'] }
+  Plug 'pangloss/vim-javascript', { 'for': ['html', 'javascript'] }
+  Plug 'kchmck/vim-coffee-script', { 'for': ['html', 'javascript'] }
+  Plug 'marijnh/tern_for_vim', { 'for': ['html', 'javascript'] }
+
+  " Python support.
+  Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+  Plug 'hynek/vim-python-pep8-indent', { 'for': 'python' }
+  Plug 'jmcantrell/vim-virtualenv', { 'for': 'python' }
+
+
   " Protobuf
-  Plugin 'uarun/vim-protobuf'
+  Plug 'uarun/vim-protobuf'
 
   " Syntax checker
-  Plugin 'scrooloose/syntastic'
+  Plug 'scrooloose/syntastic'
 
-  " Conque-GDB
-  Plugin 'vim-scripts/Conque-GDB'
-
+  " C++ IDE.
   if has("unix")
+    function! BuildYCM(info)
+      if a:info.status == 'installed' || a:info.force
+        !./install.sh
+      endif
+    endfunction
+
     " Autocompletion.
-    Plugin 'Valloric/YouCompleteMe'
+    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+    autocmd! User YouCompleteMe call youcompleteme#Enable()
+
     " C/C++/Objective-C code formatting.
-    Plugin 'rhysd/vim-clang-format'
+    Plug 'rhysd/vim-clang-format'
+    " Conque-GDB
+    Plug 'vim-scripts/Conque-GDB'
   endif
-call vundle#end()
+call plug#end()
 
 
 

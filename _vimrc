@@ -106,7 +106,7 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2")
-    set guifont=Roboto\ Mono\ for\ Powerline\ Regular\ 9
+    set guifont=Roboto\ Mono\ for\ Powerline\ Regular\ 8.75
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")

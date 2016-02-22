@@ -20,6 +20,8 @@ endif
   " To highlight indent levels in ViM.
   Plug 'nathanaelkane/vim-indent-guides'
 
+  " Zoom in/out text.
+  Plug 'drmikehenry/vim-fontsize'
   " Tree navigation for file browsing.
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   " Full path fuzz file, buffer, mru, tag, ... finder.
@@ -36,6 +38,9 @@ endif
   " To automatically enclose code within parentheses, quotes, or whatever.
   Plug 'tpope/vim-surround'
 
+  " Multi-language code autoformatting
+  Plug 'Chiel92/vim-autoformat', { 'for': 'cpp' }
+
   " Markdown.
   Plug 'plasticboy/vim-markdown'
   " Fast HMTL editing.
@@ -51,7 +56,6 @@ endif
   Plug 'davidhalter/jedi-vim', { 'for': 'python' }
   Plug 'hynek/vim-python-pep8-indent', { 'for': 'python' }
   Plug 'jmcantrell/vim-virtualenv', { 'for': 'python' }
-
 
   " Protobuf
   Plug 'uarun/vim-protobuf'
@@ -71,8 +75,6 @@ endif
     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 
-    " C/C++/Objective-C code formatting.
-    Plug 'rhysd/vim-clang-format'
     " Conque-GDB
     Plug 'vim-scripts/Conque-GDB'
   endif
@@ -106,7 +108,7 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2")
-    set guifont=Roboto\ Mono\ for\ Powerline\ Regular\ 8.75
+    set guifont=Roboto\ Mono\ for\ Powerline\ Regular\ 8.5
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
@@ -214,6 +216,7 @@ set si "Smart indent
 set wrap "Wrap lines
 
 
+
 " ==============================================================================
 " Specify the behavior when switching between buffers
 try
@@ -275,11 +278,15 @@ vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
 " Tree navigation
-let NERDTreeIgnore=['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
 
 " Search for the word under the cursor.
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" Shortcut key for code autoformatting.
+autocmd FileType c,cpp,objc noremap <F3> :Autoformat<CR>
 
 
 
@@ -288,26 +295,18 @@ nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " => Editing options.
 set cindent
-set cino+=(0,W2,g0,i-s,:0
+set cino=(0,W4,g0,i-s,:0
 set foldmethod=syntax
 set nofoldenable
 set textwidth=80
 
-let g:clang_format#style_options = {
-      \ "AccessModifierOffset" : -4,
-      \ "AllowShortIfStatementsOnASingleLine" : "true",
-      \ "AlwaysBreakTemplateDeclarations" : "true",
-      \ "Standard" : "C++11",
-      \ "BreakBeforeBraces" : "Stroustrup" }
-
-" Map to <Leader>cf in C++ code
-autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-" If you install vim-operator-user
-autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 " Toggle auto formatting.
-autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
 autocmd FileType c,cpp,objc nnoremap <Leader>jd :YcmCompleter GoTo<CR>
+
+" Use clang-format in C-family based code.
+let s:configfile_def = "'clang-format-3.6 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
+let s:noconfigfile_def = "'clang-format-3.6 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
+let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
 " => GDB integration.
 let g:ConqueTerm_Color = 2

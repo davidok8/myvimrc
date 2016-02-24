@@ -1,69 +1,84 @@
 " ==============================================================================
-" Setup Vundle package.
+" Setup plugins
 "
-set nocompatible
 filetype off
 
 if has("unix")
-  set rtp+=~/.vim/bundle/Vundle.vim
-  call vundle#begin()
+  call plug#begin('~/.vim/plugged')
 else
-  set rtp+=~/vimfiles/bundle/Vundle.vim
-  let path='~/vimfiles/bundle'
-  call vundle#begin(path)
+  call plug#begin('~/vimfiles/plugged')
 endif
 
-"vundle#begin()
-  " Firstly let Vundle manage the plugins.
-  Plugin 'gmarik/Vundle.vim'
-  " Secondly add other plugins.
+"call plug#begin()
+  " The following replaces 'set nocompatible'
+  Plug 'tpope/vim-sensible'
 
   " Solarized colorscheme.
-  Plugin 'altercation/vim-colors-solarized'
+  Plug 'altercation/vim-colors-solarized'
   " For better looking ViM status.
-  Plugin 'bling/vim-airline'
-  " Tree navigation for file browsing.
-  Plugin 'scrooloose/nerdtree'
-  " Simple motions in vim.
-  Plugin 'Lokaltog/vim-easymotion'
-  " To automatically enclose code within parentheses, quotes, or whatever.
-  Plugin 'tpope/vim-surround'
+  Plug 'bling/vim-airline'
   " To highlight indent levels in ViM.
-  Plugin 'nathanaelkane/vim-indent-guides'
-  " Integration with Git.
-  Plugin 'tpope/vim-fugitive'
-  " Markdown.
-  Plugin 'plasticboy/vim-markdown'
+  Plug 'nathanaelkane/vim-indent-guides'
+
+  " Zoom in/out text.
+  Plug 'drmikehenry/vim-fontsize'
+  " Tree navigation for file browsing.
+  Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   " Full path fuzz file, buffer, mru, tag, ... finder.
-  Plugin 'kien/ctrlp.vim'
-  " Fast HMTL editing.
-  Plugin 'mattn/emmet-vim'
-  " Javascript support.
-  Plugin 'jelera/vim-javascript-syntax'
-  Plugin 'pangloss/vim-javascript'
-  Plugin 'kchmck/vim-coffee-script'
-  Plugin 'marijnh/tern_for_vim'
-  " Enhanced tab.
-  Plugin 'ervandew/supertab'
-  " Python support.
-  Plugin 'davidhalter/jedi-vim'
-  Plugin 'hynek/vim-python-pep8-indent'
-  Plugin 'jmcantrell/vim-virtualenv'
+  Plug 'kien/ctrlp.vim'
   " For quick string search
-  Plugin 'rking/ag.vim'
+  Plug 'rking/ag.vim'
+  " Enhanced tab.
+  Plug 'ervandew/supertab'
+  " Simple motions in vim.
+  Plug 'easymotion/vim-easymotion'
+  " Integration with Git.
+  Plug 'tpope/vim-fugitive'
+
+  " To automatically enclose code within parentheses, quotes, or whatever.
+  Plug 'tpope/vim-surround'
+
+  " Multi-language code autoformatting
+  Plug 'Chiel92/vim-autoformat', { 'for': 'cpp' }
+
+  " Markdown.
+  Plug 'plasticboy/vim-markdown'
+  " Fast HMTL editing.
+  Plug 'mattn/emmet-vim'
+
+  " Javascript support.
+  Plug 'jelera/vim-javascript-syntax', { 'for': ['html', 'javascript'] }
+  Plug 'pangloss/vim-javascript', { 'for': ['html', 'javascript'] }
+  Plug 'kchmck/vim-coffee-script', { 'for': ['html', 'javascript'] }
+  Plug 'marijnh/tern_for_vim', { 'for': ['html', 'javascript'] }
+
+  " Python support.
+  Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+  Plug 'hynek/vim-python-pep8-indent', { 'for': 'python' }
+  Plug 'jmcantrell/vim-virtualenv', { 'for': 'python' }
+
   " Protobuf
-  Plugin 'uarun/vim-protobuf'
+  Plug 'uarun/vim-protobuf'
 
   " Syntax checker
-  Plugin 'scrooloose/syntastic'
+  Plug 'scrooloose/syntastic'
 
+  " C++ IDE.
   if has("unix")
+    function! BuildYCM(info)
+      if a:info.status == 'installed' || a:info.force
+        !./install.sh
+      endif
+    endfunction
+
     " Autocompletion.
-    Plugin 'Valloric/YouCompleteMe'
-    " C/C++/Objective-C code formatting.
-    Plugin 'rhysd/vim-clang-format'
+    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+    autocmd! User YouCompleteMe call youcompleteme#Enable()
+
+    " Conque-GDB
+    Plug 'vim-scripts/Conque-GDB'
   endif
-call vundle#end()
+call plug#end()
 
 
 
@@ -93,13 +108,14 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2")
-    set guifont=Inconsolata\ 9.5
+    set guifont=Roboto\ Mono\ for\ Powerline\ Regular\ 8.5
   elseif has("gui_macvim")
     set guifont=Menlo\ Regular:h14
   elseif has("gui_win32")
     set guifont=Consolas:h11:cANSI
   endif
 endif
+let g:airline_powerline_fonts=1
 
 
 " Enable syntax highlighting
@@ -200,6 +216,7 @@ set si "Smart indent
 set wrap "Wrap lines
 
 
+
 " ==============================================================================
 " Specify the behavior when switching between buffers
 try
@@ -228,36 +245,7 @@ set laststatus=2
 
 
 " ==============================================================================
-" => C++ formatting options
-"
-set cindent
-set cino+=(0,W2,g0,i-s,:0
-set foldmethod=syntax
-set textwidth=80
-
-let g:clang_format#style_options = {
-      \ "AccessModifierOffset" : -4,
-      \ "AllowShortIfStatementsOnASingleLine" : "true",
-      \ "AlwaysBreakTemplateDeclarations" : "true",
-      \ "Standard" : "C++11",
-      \ "BreakBeforeBraces" : "Stroustrup" }
-
-
-" ==============================================================================
-" => Jedi-vim
-"
-let g:jedi#force_py_version = 3
-let g:neocomplcache_enable_at_startup = 1
-if !exists('g:neocomplcache_omni_functions')
-  let g:neocomplcache_omni_functions = {}
-endif
-let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
-let g:jedi#popup_on_dot = 0
-
-
-" ==============================================================================
 " => Keybindings
-"
 "
 " => Moving around, tabs, windows and buffers
 "
@@ -284,41 +272,64 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-"
-"
-" ==============================================================================
-" => Visual mode related
-"
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
-"
-"
-" ==============================================================================
-" => Vim-flake8
-"
-autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>
-"
-"
-" ==============================================================================
+
 " Tree navigation
+let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
-" Auto-completion
-map <F2> :YcmCompleter GoToDefinition<CR>
-"
-"
+
 " Search for the word under the cursor.
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-"
-" C++ editing
-"
-" Map to <Leader>cf in C++ code
-autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-"
-" If you install vim-operator-user
-autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
-"
+
+" Shortcut key for code autoformatting.
+autocmd FileType c,cpp,objc noremap <F3> :Autoformat<CR>
+
+
+
+" ==============================================================================
+" C++ configuration.
+
+" => Editing options.
+set cindent
+set cino=(0,W4,g0,i-s,:0
+set foldmethod=syntax
+set nofoldenable
+set textwidth=80
+
 " Toggle auto formatting.
-nmap <Leader>C :ClangFormatAutoToggle<CR>
+autocmd FileType c,cpp,objc nnoremap <Leader>jd :YcmCompleter GoTo<CR>
+
+" Use clang-format in C-family based code.
+let s:configfile_def = "'clang-format-3.6 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
+let s:noconfigfile_def = "'clang-format-3.6 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
+let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
+
+" => GDB integration.
+let g:ConqueTerm_Color = 2
+let g:ConqueTerm_CloseOnEnd = 1
+let g:ConqueTerm_StartMessages = 0
+
+
+
+" ==============================================================================
+" Python configuration
+"
+" => Indentation.
+autocmd FileType python setlocal foldmethod=indent
+autocmd FileType python setlocal textwidth=79
+
+" => Jedi-vim
+"let g:jedi#force_py_version = 3
+let g:neocomplcache_enable_at_startup = 1
+if !exists('g:neocomplcache_omni_functions')
+  let g:neocomplcache_omni_functions = {}
+endif
+let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
+let g:jedi#popup_on_dot = 0
+
+" => Vim-flake8
+autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>

@@ -201,6 +201,8 @@ set noswapfile
 " ==============================================================================
 " => Edit options.
 "
+" By default set linewidth to 80 column.
+set textwidth=80
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 " Use Unix as the standard file type
@@ -220,7 +222,7 @@ set wrap "Wrap lines
 
 
 " ==============================================================================
-" => Edit options.
+" => Code folding options.
 "
 let g:sh_fold_enabled=7
 let g:is_bash=1
@@ -298,9 +300,8 @@ autocmd FileType c,cpp,objc,python noremap <F3> :Autoformat<CR>
 " => C++ IDE
 
 " Editing options.
-set cindent
-set cino=(0,W4,g0,i-s,:0
-set textwidth=80
+autocmd FileType c,cpp,objc setlocal cindent
+autocmd FileType c,cpp,objc setlocal cino=(0,W4,g0,i-s,:0
 autocmd FileType c,cpp,objc setlocal foldmethod=syntax
 
 " Toggle auto formatting.

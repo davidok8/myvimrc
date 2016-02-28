@@ -10,22 +10,30 @@ else
 endif
 
 "call plug#begin()
-  " The following replaces 'set nocompatible'
+  " ========================================================================== "
+  " Default set of vim settings that everyone can agree on.
   Plug 'tpope/vim-sensible'
 
+
+  " ========================================================================== "
+  " Vim theme.
+  "
   " Solarized colorscheme.
   Plug 'altercation/vim-colors-solarized'
   " For better looking ViM status.
-  Plug 'bling/vim-airline'
-  " To highlight indent levels in ViM.
-  Plug 'nathanaelkane/vim-indent-guides'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
 
+
+  " ========================================================================== "
+  " Additional GUI and behavioral features.
+  "
   " Zoom in/out text.
   Plug 'drmikehenry/vim-fontsize'
   " Tree navigation for file browsing.
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   " Full path fuzz file, buffer, mru, tag, ... finder.
-  Plug 'kien/ctrlp.vim'
+  Plug 'ctrlpvim/ctrlp.vim'
   " For quick string search
   Plug 'rking/ag.vim'
   " Enhanced tab.
@@ -36,7 +44,15 @@ endif
   Plug 'tpope/vim-fugitive'
 
   " To automatically enclose code within parentheses, quotes, or whatever.
-  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-surround'  " help: surround
+
+  " To highlight indent levels in ViM.
+  Plug 'nathanaelkane/vim-indent-guides'  " help: indent-guides, (<Leader>ig.)
+
+
+  " ========================================================================== "
+  " Syntax checker
+  Plug 'scrooloose/syntastic'
 
   " Multi-language code autoformatting
   Plug 'Chiel92/vim-autoformat', { 'for': 'cpp' }
@@ -57,11 +73,11 @@ endif
   Plug 'hynek/vim-python-pep8-indent', { 'for': 'python' }
   Plug 'jmcantrell/vim-virtualenv', { 'for': 'python' }
 
+  " Shell script support.
+  Plug 'vim-scripts/sh.vim--Cla'
+
   " Protobuf
   Plug 'uarun/vim-protobuf'
-
-  " Syntax checker
-  Plug 'scrooloose/syntastic'
 
   " C++ IDE.
   if has("unix")
@@ -83,20 +99,32 @@ call plug#end()
 
 
 " ==============================================================================
-" Prefer using project-specific `.vimrc` file.
+" => Prefer using project-specific `.vimrc` file.
 set exrc
 set secure
 
 
-filetype plugin indent on
+" ==============================================================================
+" => GUI behavioral options.
+"
+" No annoying sound on errors.
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" Allow arrow keys to navigate in text.
+set whichwrap+=<,>,h,l
+
+" Enable mouse.
+set mouse=a
 
 
 " ==============================================================================
-" General display options.
+" => GUI general display options.
 "
-" Always show current position (line, column) of the cursor.
+" Always show line number of the cursor.
 set number
-set ruler
 
 " A buffer becomes hidden when it is abandoned
 set hid
@@ -115,11 +143,8 @@ if has("gui_running")
     set guifont=Consolas:h11:cANSI
   endif
 endif
+let g:airline_theme='bubblegum'
 let g:airline_powerline_fonts=1
-
-
-" Enable syntax highlighting
-syntax enable
 
 " Set color scheme
 set background=light
@@ -130,6 +155,11 @@ else
   let g:solarized_termcolors=256
 endif
 
+
+
+" ==============================================================================
+" => Search settings.
+"
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
@@ -148,37 +178,12 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
-
-" ==============================================================================
-" Behavior options.
-"
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-
-" Configure backspace so it acts as it should act
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
-
-" Enable mouse.
-set mouse=a
-
-
-" ==============================================================================
-" Search options.
-"
 " Ignore case when searching.
 set ignorecase
 " When searching try to be smart about cases.
 set smartcase
 " Highlight search results.
 set hlsearch
-" Makes search act like search in modern browsers.
-set incsearch
-" Don't redraw while executing macros (good performance config).
-set lazyredraw
 " For regular expressions turn magic on.
 set magic
 
@@ -202,8 +207,6 @@ set encoding=utf8
 set ffs=unix,dos,mac
 " Use spaces instead of tabs
 set expandtab
-" Be smart when using tabs ;)
-set smarttab
 " 2 spaces per tabs.
 set shiftwidth=2
 set tabstop=2
@@ -211,14 +214,23 @@ set tabstop=2
 set lbr
 set tw=500
 
-set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 
 
 
 " ==============================================================================
-" Specify the behavior when switching between buffers
+" => Edit options.
+"
+let g:sh_fold_enabled=7
+let g:is_bash=1
+set nofoldenable
+set foldmethod=indent
+
+
+
+" ==============================================================================
+" => Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -233,14 +245,6 @@ autocmd BufReadPost *
 
 " Remember info about open buffers on close
 set viminfo^=%
-
-
-
-" ==============================================================================
-" => Status line
-"
-" Always show the status line
-set laststatus=2
 
 
 
@@ -286,19 +290,18 @@ map <S-Tab> :NERDTreeToggle<CR>
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Shortcut key for code autoformatting.
-autocmd FileType c,cpp,objc noremap <F3> :Autoformat<CR>
+autocmd FileType c,cpp,objc,python noremap <F3> :Autoformat<CR>
 
 
 
 " ==============================================================================
-" C++ configuration.
+" => C++ IDE
 
-" => Editing options.
+" Editing options.
 set cindent
 set cino=(0,W4,g0,i-s,:0
-set foldmethod=syntax
-set nofoldenable
 set textwidth=80
+autocmd FileType c,cpp,objc setlocal foldmethod=syntax
 
 " Toggle auto formatting.
 autocmd FileType c,cpp,objc nnoremap <Leader>jd :YcmCompleter GoTo<CR>
@@ -308,7 +311,7 @@ let s:configfile_def = "'clang-format-3.6 -lines='.a:firstline.':'.a:lastline.' 
 let s:noconfigfile_def = "'clang-format-3.6 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
-" => GDB integration.
+" GDB integration.
 let g:ConqueTerm_Color = 2
 let g:ConqueTerm_CloseOnEnd = 1
 let g:ConqueTerm_StartMessages = 0
@@ -316,13 +319,20 @@ let g:ConqueTerm_StartMessages = 0
 
 
 " ==============================================================================
-" Python configuration
+" => Shell script IDE.
 "
-" => Indentation.
+autocmd FileType sh setlocal foldmethod=syntax
+
+
+
+" ==============================================================================
+" => Python IDE.
+"
+" Indentation.
 autocmd FileType python setlocal foldmethod=indent
 autocmd FileType python setlocal textwidth=79
 
-" => Jedi-vim
+" Jedi-vim
 "let g:jedi#force_py_version = 3
 let g:neocomplcache_enable_at_startup = 1
 if !exists('g:neocomplcache_omni_functions')
@@ -331,5 +341,5 @@ endif
 let g:neocomplcache_omni_functions['python'] = 'jedi#completions'
 let g:jedi#popup_on_dot = 0
 
-" => Vim-flake8
+" Vim-flake8
 autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>

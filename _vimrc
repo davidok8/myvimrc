@@ -23,6 +23,8 @@ endif
   " For better looking ViM status.
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
+  Plug 'bling/vim-bufferline'
+  "Plug 'edkolev/tmuxline.vim'
 
 
   " ========================================================================== "

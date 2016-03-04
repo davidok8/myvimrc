@@ -24,7 +24,6 @@ endif
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
 
-
   " ========================================================================== "
   " Additional GUI and behavioral features.
   "
@@ -83,7 +82,7 @@ endif
   if has("unix")
     function! BuildYCM(info)
       if a:info.status == 'installed' || a:info.force
-        !./install.sh
+        !./install.sh --clang-completer
       endif
     endfunction
 
@@ -143,8 +142,9 @@ if has("gui_running")
     set guifont=Consolas:h11:cANSI
   endif
 endif
-let g:airline_theme='bubblegum'
-let g:airline_powerline_fonts=1
+let g:airline_theme = 'bubblegum'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
 " Set color scheme
 set background=light
@@ -292,7 +292,7 @@ map <S-Tab> :NERDTreeToggle<CR>
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Shortcut key for code autoformatting.
-autocmd FileType c,cpp,objc,python noremap <F3> :Autoformat<CR>
+autocmd FileType c,cpp,objc,python noremap <C-K><C-F> :Autoformat<CR>
 
 
 

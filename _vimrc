@@ -50,6 +50,11 @@ endif
 
 
   " ========================================================================== "
+  " Fix common writing problems
+  Plug 'davidbeckingsale/writegood.vim'
+
+
+  " ========================================================================== "
   " Syntax checker
   Plug 'scrooloose/syntastic'
 
@@ -76,7 +81,10 @@ endif
   Plug 'vim-scripts/sh.vim--Cla'
 
   " Protobuf
-  Plug 'uarun/vim-protobuf'
+  Plug 'jdevera/vim-protobuf-syntax'
+
+  " Latex support
+  Plug 'xuhdev/vim-latex-live-preview'
 
   " C++ IDE.
   if has("unix")
@@ -147,14 +155,13 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
 " Set color scheme
-set background=light
-if has("gui_running")
-  colorscheme solarized
-else
-  set t_Co=256
-  let g:solarized_termcolors=256
+if !has("gui_running")
+  let g:solarized_termcolors=65536
+  let g:solarized_termtrans=1
 endif
 
+set background=light
+colorscheme solarized
 
 
 " ==============================================================================
@@ -259,11 +266,15 @@ set viminfo^=%
 map j gj
 map k gk
 
-" Disable highlight when <leader><cr> is pressed
+" Disable highlight when <leader><cr> is pressed.
 map <silent> <leader><cr> :noh<cr>
 
-" Close all the buffers
+" Close all the buffers.
 map <leader>ba :1,1000 bd!<cr>
+" Switch to the next buffer.
+map <leader>bn :bn<cr>
+" Switch to the previous buffer.
+map <leader>bn :bn<cr>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -281,7 +292,7 @@ map <leader>cd :cd %:p:h<cr>:pwd<cr>
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :call VisualSelection('f')<CR>
-vnoremap <silent> # :call VisualSelection('b')<CR>
+vnoremap <silent> # :call ViSUALselection('b')<CR>
 
 " Tree navigation
 let NERDTreeIgnore = ['\.pyc$']
@@ -289,7 +300,7 @@ let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
 
 " Search for the word under the cursor.
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Shortcut key for code autoformatting.
 autocmd FileType c,cpp,objc,python noremap <C-K><C-F> :Autoformat<CR>
@@ -316,6 +327,41 @@ let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfi
 let g:ConqueTerm_Color = 2
 let g:ConqueTerm_CloseOnEnd = 1
 let g:ConqueTerm_StartMessages = 0
+
+
+" ==============================================================================
+" => Shell script IDE.
+"
+let g:livepreview_previewer = 'atril'
+au BufRead, BufNewFile *.tex set filetype=tex
+autocmd FileType tex setlocal updatetime=1
+autocmd FileType tex setlocal textwidth=80
+autocmd FileType tex map <C-F12> :LLPStartPreview<cr>
+" Reformat lines (getting the spacing correct) {{{
+fun! TeX_fmt()
+    if (getline(".") != "")
+    let save_cursor = getpos(".")
+        let op_wrapscan = &wrapscan
+        set nowrapscan
+        let par_begin = '^\(%D\)\=\s*\($\|\\start\|\\stop\|\\Start\|\\Stop\|\\\(sub\)*section\>\|\\item\>\|\\NC\>\|\\blank\>\|\\noindent\>\)'
+        let par_end   = '^\(%D\)\=\s*\($\|\\start\|\\stop\|\\Start\|\\Stop\|\\place\|\\\(sub\)*section\>\|\\item\>\|\\NC\>\|\\blank\>\)'
+    try
+      exe '?'.par_begin.'?+'
+    catch /E384/
+      1
+    endtry
+        norm V
+    try
+      exe '/'.par_end.'/-'
+    catch /E385/
+      $
+    endtry
+    norm gq
+        let &wrapscan = op_wrapscan
+    call setpos('.', save_cursor)
+    endif
+endfun
+autocmd FileType tex nmap Q :call TeX_fmt()<CR>
 
 
 

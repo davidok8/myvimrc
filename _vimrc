@@ -208,8 +208,6 @@ set noswapfile
 " ==============================================================================
 " => Edit options.
 "
-" By default set linewidth to 80 column.
-set textwidth=80
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 " Use Unix as the standard file type
@@ -219,13 +217,13 @@ set expandtab
 " 2 spaces per tabs.
 set shiftwidth=2
 set tabstop=2
-" Linebreak on 500 characters
+" Linebreak on 80 characters
 set lbr
-set tw=500
-
-set si "Smart indent
-set wrap "Wrap lines
-
+set tw=80
+" Smart indent
+set si
+" Wrap lines
+set wrap
 
 
 " ==============================================================================
@@ -266,38 +264,39 @@ set viminfo^=%
 map j gj
 map k gk
 
-" Disable highlight when <leader><cr> is pressed.
-map <silent> <leader><cr> :noh<cr>
+let mapleader=","
+
+" Disable highlight when <leader><CR> is pressed.
+map <silent> <leader><CR> :noh<CR>
 
 " Close all the buffers.
-map <leader>ba :1,1000 bd!<cr>
-" Switch to the next buffer.
-map <leader>bn :bn<cr>
-" Switch to the previous buffer.
-map <leader>bn :bn<cr>
+map <leader>ba :1,1000 bd!<CR>
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
+map <leader>tn :tabnew<CR>
+map <leader>to :tabonly<CR>
+map <leader>tc :tabclose<CR>
 map <leader>tm :tabmove
 
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-
 " Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+map <leader>cd :cd %:p:h<CR>:pwd<CR>
+
+" Close split buffer without killing split.
+map <leader>tq :bp\|bd # <CR>
 
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :call VisualSelection('f')<CR>
-vnoremap <silent> # :call ViSUALselection('b')<CR>
+vnoremap <silent> # :call VisuauSelection('b')<CR>
 
 " Tree navigation
 let NERDTreeIgnore = ['\.pyc$']
 let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
+" Switch to the next buffer.
+map <C-Tab> :bn<CR>
+" Switch to the previous buffer.
+map <C-S-Tab> :bp<CR>
 
 " Search for the word under the cursor.
 autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
@@ -315,8 +314,8 @@ autocmd FileType c,cpp,objc setlocal cindent
 autocmd FileType c,cpp,objc setlocal cino=(0,W4,g0,i-s,:0
 autocmd FileType c,cpp,objc setlocal foldmethod=syntax
 
-" Toggle auto formatting.
-autocmd FileType c,cpp,objc nnoremap <Leader>jd :YcmCompleter GoTo<CR>
+" Jump to definition.
+autocmd FileType c,cpp,objc nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.
 let s:configfile_def = "'clang-format-3.6 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
@@ -336,30 +335,30 @@ let g:livepreview_previewer = 'atril'
 au BufRead, BufNewFile *.tex set filetype=tex
 autocmd FileType tex setlocal updatetime=1
 autocmd FileType tex setlocal textwidth=80
-autocmd FileType tex map <C-F12> :LLPStartPreview<cr>
+autocmd FileType tex map <C-F12> :LLPStartPreview<CR>
 " Reformat lines (getting the spacing correct) {{{
 fun! TeX_fmt()
-    if (getline(".") != "")
-    let save_cursor = getpos(".")
-        let op_wrapscan = &wrapscan
-        set nowrapscan
-        let par_begin = '^\(%D\)\=\s*\($\|\\start\|\\stop\|\\Start\|\\Stop\|\\\(sub\)*section\>\|\\item\>\|\\NC\>\|\\blank\>\|\\noindent\>\)'
-        let par_end   = '^\(%D\)\=\s*\($\|\\start\|\\stop\|\\Start\|\\Stop\|\\place\|\\\(sub\)*section\>\|\\item\>\|\\NC\>\|\\blank\>\)'
-    try
-      exe '?'.par_begin.'?+'
-    catch /E384/
-      1
-    endtry
-        norm V
-    try
-      exe '/'.par_end.'/-'
-    catch /E385/
-      $
-    endtry
-    norm gq
-        let &wrapscan = op_wrapscan
-    call setpos('.', save_cursor)
-    endif
+   if (getline(".") != "")
+      let save_cursor = getpos(".")
+      let op_wrapscan = &wrapscan
+      set nowrapscan
+      let par_begin = '^\(%D\)\=\s*\($\|\\start\|\\stop\|\\Start\|\\Stop\|\\\(sub\)*section\>\|\\item\>\|\\NC\>\|\\blank\>\|\\noindent\>\)'
+      let par_end   = '^\(%D\)\=\s*\($\|\\start\|\\stop\|\\Start\|\\Stop\|\\place\|\\\(sub\)*section\>\|\\item\>\|\\NC\>\|\\blank\>\)'
+      try
+         exe '?'.par_begin.'?+'
+      catch /E384/
+         1
+      endtry
+      norm V
+      try
+         exe '/'.par_end.'/-'
+      catch /E385/
+         $
+      endtry
+      norm gq
+      let &wrapscan = op_wrapscan
+      call setpos('.', save_cursor)
+   endif
 endfun
 autocmd FileType tex nmap Q :call TeX_fmt()<CR>
 

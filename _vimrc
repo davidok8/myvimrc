@@ -264,7 +264,7 @@ set viminfo^=%
 map j gj
 map k gk
 
-let mapleader=","
+let mapleader=";"
 
 " Disable highlight when <leader><CR> is pressed.
 map <silent> <leader><CR> :noh<CR>

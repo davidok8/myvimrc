@@ -298,11 +298,15 @@ map <C-Tab> :bn<CR>
 " Switch to the previous buffer.
 map <C-S-Tab> :bp<CR>
 
+
+" Define CUDA file extensions.
+au BufRead, BufNewFile *.cu set filetype=cu
+
 " Search for the word under the cursor.
-autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+autocmd FileType c,cpp,objc,python,cu nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Shortcut key for code autoformatting.
-autocmd FileType c,cpp,objc,python noremap <C-K><C-F> :Autoformat<CR>
+autocmd FileType c,cpp,objc,python,cu noremap <C-K><C-F> :Autoformat<CR>
 
 
 
@@ -310,12 +314,12 @@ autocmd FileType c,cpp,objc,python noremap <C-K><C-F> :Autoformat<CR>
 " => C++ IDE
 
 " Editing options.
-autocmd FileType c,cpp,objc setlocal cindent
-autocmd FileType c,cpp,objc setlocal cino=(0,W4,g0,i-s,:0
-autocmd FileType c,cpp,objc setlocal foldmethod=syntax
+autocmd FileType c,cpp,objc,cu setlocal cindent
+autocmd FileType c,cpp,objc,cu setlocal cino=(0,W4,g0,i-s,:0
+autocmd FileType c,cpp,objc,cu setlocal foldmethod=syntax
 
 " Jump to definition.
-autocmd FileType c,cpp,objc nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,objc,cu nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.
 let s:configfile_def = "'clang-format-3.6 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
@@ -334,7 +338,6 @@ let g:ConqueTerm_StartMessages = 0
 let g:livepreview_previewer = 'atril'
 au BufRead, BufNewFile *.tex set filetype=tex
 autocmd FileType tex setlocal updatetime=1
-autocmd FileType tex setlocal textwidth=80
 autocmd FileType tex map <C-F12> :LLPStartPreview<CR>
 " Reformat lines (getting the spacing correct) {{{
 fun! TeX_fmt()

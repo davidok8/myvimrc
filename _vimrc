@@ -277,6 +277,8 @@ map <leader>tn :tabnew<CR>
 map <leader>to :tabonly<CR>
 map <leader>tc :tabclose<CR>
 map <leader>tm :tabmove
+map <leader>nn :bp<CR>
+map <leader>pp :bn<CR>
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<CR>:pwd<CR>
@@ -320,6 +322,7 @@ autocmd FileType c,cpp,objc,cu setlocal foldmethod=syntax
 
 " Jump to definition.
 autocmd FileType c,cpp,objc,cu nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,objc,cu nnoremap <Leader>j :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.
 let s:configfile_def = "'clang-format-3.6 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
@@ -332,8 +335,9 @@ let g:ConqueTerm_CloseOnEnd = 1
 let g:ConqueTerm_StartMessages = 0
 
 
+
 " ==============================================================================
-" => Shell script IDE.
+" => LaTeX IDE.
 "
 let g:livepreview_previewer = 'atril'
 au BufRead, BufNewFile *.tex set filetype=tex

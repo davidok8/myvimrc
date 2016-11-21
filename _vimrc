@@ -270,7 +270,7 @@ let mapleader=";"
 map <silent> <leader><CR> :noh<CR>
 
 " Close all the buffers.
-map <leader>ba :1,1000 bd!<CR>
+map <leader>ba :%bd!<CR>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<CR>

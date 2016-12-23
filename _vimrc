@@ -101,6 +101,15 @@ endif
     " Conque-GDB
     Plug 'vim-scripts/Conque-GDB'
   endif
+
+  " F# IDE.
+  Plug 'fsharp/vim-fsharp', {
+    \ 'for': 'fsharp',
+    \ 'do': 'make fsautocomplete',
+    \}
+
+  " Haskell IDE.
+  Plug 'dag/vim2hs'
 call plug#end()
 
 

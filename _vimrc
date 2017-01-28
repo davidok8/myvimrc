@@ -280,6 +280,8 @@ map <silent> <leader><CR> :noh<CR>
 
 " Close all the buffers.
 map <leader>ba :%bd!<CR>
+" Close all buffers but this one.
+map <leader>bc :NERDTreeClose<bar>bufdo bd<CR>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<CR>

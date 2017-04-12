@@ -313,14 +313,15 @@ map <C-S-Tab> :bp<CR>
 
 
 " Define CUDA file extensions.
-au BufRead, BufNewFile *.cu set filetype=cu
-au BufRead, BufNewFile *.hq set filetype=hq
+au BufRead,BufNewFile *.cu set filetype=cu
+
+au BufRead,BufNewFile *.hq set filetype=cpp
 
 " Search for the word under the cursor.
-autocmd FileType c,cpp,objc,python,cu,hq nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+autocmd FileType c,cpp,objc,python,cu nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Shortcut key for code autoformatting.
-autocmd FileType c,cpp,objc,python,cu,hq noremap <C-K><C-F> :Autoformat<CR>
+autocmd FileType c,cpp,objc,python,cu noremap <C-K><C-F> :Autoformat<CR>
 
 
 
@@ -328,13 +329,13 @@ autocmd FileType c,cpp,objc,python,cu,hq noremap <C-K><C-F> :Autoformat<CR>
 " => C++ IDE
 
 " Editing options.
-autocmd FileType c,cpp,objc,cu,hq setlocal cindent
-autocmd FileType c,cpp,objc,cu,hq setlocal cino=(0,W4,g0,i-s,:0
-autocmd FileType c,cpp,objc,cu,hq setlocal foldmethod=syntax
+autocmd FileType c,cpp,objc,cu setlocal cindent
+autocmd FileType c,cpp,objc,cu setlocal cino=(0,W4,g0,i-s,:0
+autocmd FileType c,cpp,objc,cu setlocal foldmethod=syntax
 
 " Jump to definition.
-autocmd FileType c,cpp,objc,cu,hq nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
-autocmd FileType c,cpp,objc,cu,hq nnoremap <Leader>j :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,objc,cu nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
+autocmd FileType c,cpp,objc,cu nnoremap <Leader>j :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.
 let s:configfile_def = "'clang-format -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"

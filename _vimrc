@@ -14,6 +14,7 @@ endif
   " Default set of vim settings that everyone can agree on.
   Plug 'tpope/vim-sensible'
 
+  " Asynchronous command support.
   Plug 'tpope/vim-dispatch'
 
   " ========================================================================== "
@@ -104,6 +105,7 @@ endif
 
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
     Plug 'jeaye/color_coded'
+    Plug 'lyuts/vim-rtags'
   endif
 
   " F# IDE.

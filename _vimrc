@@ -61,7 +61,7 @@ endif
   Plug 'scrooloose/syntastic'
 
   " Multi-language code autoformatting
-  Plug 'Chiel92/vim-autoformat', { 'for': 'cpp' }
+  Plug 'Chiel92/vim-autoformat'
 
   " Markdown.
   Plug 'plasticboy/vim-markdown'
@@ -157,7 +157,7 @@ if has("gui_running")
   set guioptions+=e
   set guitablabel=%M\ %t
 
-  if has("gui_gtk2")
+  if has("gui_gtk2") || has("gui_gtk3")
     set guifont=Roboto\ Mono\ for\ Powerline\ Regular\ 11
   elseif has("gui_macvim")
     set guifont=Roboto\ Mono\ for\ Powerline:h11
@@ -175,7 +175,7 @@ if !has("gui_running")
   let g:solarized_termtrans=1
 endif
 
-set background=light
+set background=dark
 colorscheme solarized
 
 

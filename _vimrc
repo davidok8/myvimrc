@@ -105,7 +105,6 @@ endif
 
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
     Plug 'jeaye/color_coded'
-    Plug 'lyuts/vim-rtags'
   endif
 
   " F# IDE.
@@ -161,9 +160,9 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2") || has("gui_gtk3")
-    set guifont=Roboto\ Mono\ for\ Powerline\ Regular\ 10
+    set guifont=Hack\ Regular\ 10
   elseif has("gui_macvim")
-    set guifont=Roboto\ Mono\ for\ Powerline:h11
+    set guifont=Hack:h11
   elseif has("gui_win32")
     set guifont=Consolas:h11:cANSI
   endif
@@ -178,8 +177,8 @@ if !has("gui_running")
   let g:solarized_termtrans=1
 endif
 
-set background=dark
 colorscheme solarized
+set background=dark
 
 
 " ==============================================================================

@@ -100,8 +100,9 @@ endif
     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 
-    " Conque-GDB
-    Plug 'vim-scripts/Conque-GDB'
+    " GDB integration.
+    Plug 'Shougo/vimproc.vim', {'do': 'make'}
+    Plug 'idanarye/vim-vebugger'
 
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
     Plug 'jeaye/color_coded'
@@ -350,10 +351,10 @@ let s:noconfigfile_def = "'clang-format -lines='.a:firstline.':'.a:lastline.' --
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
 " GDB integration.
-let g:ConqueTerm_Color = 2
-let g:ConqueTerm_CloseOnEnd = 1
-let g:ConqueTerm_StartMessages = 0
-
+autocmd FileType c,cpp nnoremap <Leader>gbb :VBGtoggleBreakpointThisLine<CR>
+autocmd FileType c,cpp nnoremap <Leader>gnn :VBGstepOver<CR>
+autocmd FileType c,cpp nnoremap <Leader>gii :VBGstepIn<CR>
+autocmd FileType c,cpp nnoremap <Leader>gcc :VBGcontinue<CR>
 
 " ==============================================================================
 " => LaTeX IDE.

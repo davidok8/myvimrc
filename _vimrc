@@ -58,7 +58,7 @@ endif
 
   " ========================================================================== "
   " Syntax checker
-  Plug 'scrooloose/syntastic'
+  "Plug 'scrooloose/syntastic'
 
   " Multi-language code autoformatting
   Plug 'Chiel92/vim-autoformat'
@@ -312,7 +312,7 @@ vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisuauSelection('b')<CR>
 
 " Tree navigation
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$', '^__pycache__$']
 let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
 " Switch to the next buffer.
@@ -351,10 +351,10 @@ let s:noconfigfile_def = "'clang-format -lines='.a:firstline.':'.a:lastline.' --
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
 " GDB integration.
-autocmd FileType c,cpp nnoremap <Leader>gbb :VBGtoggleBreakpointThisLine<CR>
-autocmd FileType c,cpp nnoremap <Leader>gnn :VBGstepOver<CR>
-autocmd FileType c,cpp nnoremap <Leader>gii :VBGstepIn<CR>
-autocmd FileType c,cpp nnoremap <Leader>gcc :VBGcontinue<CR>
+autocmd FileType c,cpp nnoremap <Leader>gb :VBGtoggleBreakpointThisLine<CR>
+autocmd FileType c,cpp nnoremap <Leader>gn :VBGstepOver<CR>
+autocmd FileType c,cpp nnoremap <Leader>gi :VBGstepIn<CR>
+autocmd FileType c,cpp nnoremap <Leader>gc :VBGcontinue<CR>
 
 " ==============================================================================
 " => LaTeX IDE.

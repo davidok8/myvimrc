@@ -22,6 +22,8 @@ endif
   "
   " Solarized colorscheme.
   Plug 'altercation/vim-colors-solarized'
+  Plug 'rakr/vim-one'
+  Plug 'kristijanhusak/vim-hybrid-material'
   " For better looking ViM status.
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
@@ -58,7 +60,7 @@ endif
 
   " ========================================================================== "
   " Syntax checker
-  Plug 'scrooloose/syntastic'
+  "Plug 'scrooloose/syntastic'
 
   " Multi-language code autoformatting
   Plug 'Chiel92/vim-autoformat', { 'for': 'cpp' }
@@ -81,6 +83,9 @@ endif
 
   " Shell script support.
   Plug 'vim-scripts/sh.vim--Cla'
+
+  " Powershell script support.
+  Plug 'PProvost/vim-ps1'
 
   " Protobuf
   Plug 'jdevera/vim-protobuf-syntax'
@@ -116,6 +121,10 @@ endif
 
   " Haskell IDE.
   Plug 'dag/vim2hs'
+
+  " Rust IDE.
+  Plug 'rust-lang/rust.vim'
+  Plug 'racer-rust/vim-racer'
 call plug#end()
 
 
@@ -161,9 +170,9 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2") || has("gui_gtk3")
-    set guifont=Roboto\ Mono\ for\ Powerline\ Regular\ 10
+    set guifont=Hack\ Regular\ 9
   elseif has("gui_macvim")
-    set guifont=Roboto\ Mono\ for\ Powerline:h11
+    set guifont=Hack:h11
   elseif has("gui_win32")
     set guifont=Consolas:h11:cANSI
   endif
@@ -178,7 +187,7 @@ if !has("gui_running")
   let g:solarized_termtrans=1
 endif
 
-set background=light
+set background=dark
 colorscheme solarized
 
 
@@ -229,7 +238,7 @@ set noswapfile
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 " Use Unix as the standard file type
-set ffs=unix,dos,mac
+set ffs=unix
 " Use spaces instead of tabs
 set expandtab
 " 2 spaces per tabs.
@@ -332,6 +341,17 @@ autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 autocmd FileType c,cpp,objc,python noremap <C-K><C-F> :Autoformat<CR>
 
 
+function RangerExplorer()
+    exec "silent !ranger --choosefile=/tmp/vim_ranger_current_file " . expand("%:p:h")
+    if filereadable('/tmp/vim_ranger_current_file')
+        exec 'edit ' . system('cat /tmp/vim_ranger_current_file')
+        call system('rm /tmp/vim_ranger_current_file')
+    endif
+    redraw!
+endfun
+map <Leader>xr :call RangerExplorer()<CR>
+map <Leader>xx :Dispatch caja .<CR>
+
 
 " ==============================================================================
 " => C++ IDE
@@ -346,8 +366,8 @@ autocmd FileType c,cpp,objc nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp,objc nnoremap <Leader>j :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.
-let s:configfile_def = "'clang-format -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
-let s:noconfigfile_def = "'clang-format -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
+let s:configfile_def = "'clang-format-6.0 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
+let s:noconfigfile_def = "'clang-format-6.0 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
 " GDB integration.
@@ -416,3 +436,9 @@ let g:jedi#popup_on_dot = 0
 
 " Vim-flake8
 autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>
+
+
+" ==============================================================================
+" => Rust IDE.
+"
+let g:rustfmt_autosave = 1

@@ -63,7 +63,7 @@ endif
   "Plug 'scrooloose/syntastic'
 
   " Multi-language code autoformatting
-  Plug 'Chiel92/vim-autoformat', { 'for': 'cpp' }
+  Plug 'Chiel92/vim-autoformat'
 
   " Markdown.
   Plug 'plasticboy/vim-markdown'
@@ -105,12 +105,12 @@ endif
     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 
-    " Conque-GDB
-    Plug 'vim-scripts/Conque-GDB'
+    " GDB integration.
+    Plug 'Shougo/vimproc.vim', {'do': 'make'}
+    Plug 'idanarye/vim-vebugger'
 
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
     Plug 'jeaye/color_coded'
-    Plug 'lyuts/vim-rtags'
   endif
 
   " F# IDE.
@@ -187,8 +187,8 @@ if !has("gui_running")
   let g:solarized_termtrans=1
 endif
 
-set background=dark
 colorscheme solarized
+set background=dark
 
 
 " ==============================================================================
@@ -321,7 +321,7 @@ vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisuauSelection('b')<CR>
 
 " Tree navigation
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$', '^__pycache__$']
 let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
 " Switch to the next buffer.
@@ -371,10 +371,10 @@ let s:noconfigfile_def = "'clang-format-6.0 -lines='.a:firstline.':'.a:lastline.
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
 " GDB integration.
-let g:ConqueTerm_Color = 2
-let g:ConqueTerm_CloseOnEnd = 1
-let g:ConqueTerm_StartMessages = 0
-
+autocmd FileType c,cpp nnoremap <Leader>gb :VBGtoggleBreakpointThisLine<CR>
+autocmd FileType c,cpp nnoremap <Leader>gn :VBGstepOver<CR>
+autocmd FileType c,cpp nnoremap <Leader>gi :VBGstepIn<CR>
+autocmd FileType c,cpp nnoremap <Leader>gc :VBGcontinue<CR>
 
 " ==============================================================================
 " => LaTeX IDE.

@@ -1,6 +1,6 @@
 " ==============================================================================
 " Setup plugins
-"
+
 filetype off
 
 if has("unix")
@@ -58,7 +58,8 @@ endif
 
   " ========================================================================== "
   " Syntax checker
-  Plug 'scrooloose/syntastic'
+  "Plug 'scrooloose/syntastic'
+  Plug 'w0rp/ale'
 
   " Multi-language code autoformatting
   Plug 'Chiel92/vim-autoformat'
@@ -163,7 +164,7 @@ if has("gui_running")
   if has("gui_gtk2") || has("gui_gtk3")
     set guifont=Hack\ Regular\ 10
   elseif has("gui_macvim")
-    set guifont=Hack:h11
+    set guifont=Meslo\ LG\ M\ for\ Powerline:h12
   elseif has("gui_win32")
     set guifont=Consolas:h11:cANSI
   endif
@@ -309,7 +310,7 @@ map <leader>tq :bp\|bd # <CR>
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :call VisualSelection('f')<CR>
-vnoremap <silent> # :call VisuauSelection('b')<CR>
+vnoremap <silent> # :call VisualSelection('b')<CR>
 
 " Tree navigation
 let NERDTreeIgnore = ['\.pyc$']
@@ -355,6 +356,10 @@ autocmd FileType c,cpp nnoremap <Leader>gbb :VBGtoggleBreakpointThisLine<CR>
 autocmd FileType c,cpp nnoremap <Leader>gnn :VBGstepOver<CR>
 autocmd FileType c,cpp nnoremap <Leader>gii :VBGstepIn<CR>
 autocmd FileType c,cpp nnoremap <Leader>gcc :VBGcontinue<CR>
+
+" Help ALE parse C++ better.
+let g:ale_c_parse_compile_commands = 1
+let g:ale_linters = {'c': ['clang'], 'cpp': ['clang', 'g++']}
 
 " ==============================================================================
 " => LaTeX IDE.

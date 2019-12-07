@@ -60,7 +60,7 @@ endif
 
   " ========================================================================== "
   " Syntax checker
-  "Plug 'scrooloose/syntastic'
+  Plug 'w0rp/ale', { 'for': ['html', 'javascript', 'python'] }
 
   " Multi-language code autoformatting
   Plug 'Chiel92/vim-autoformat'
@@ -71,10 +71,9 @@ endif
   Plug 'mattn/emmet-vim'
 
   " Javascript support.
-  Plug 'jelera/vim-javascript-syntax', { 'for': ['html', 'javascript'] }
   Plug 'pangloss/vim-javascript', { 'for': ['html', 'javascript'] }
-  Plug 'kchmck/vim-coffee-script', { 'for': ['html', 'javascript'] }
-  Plug 'marijnh/tern_for_vim', { 'for': ['html', 'javascript'] }
+  Plug 'mxw/vim-jsx', { 'for': ['html', 'javascript'] }
+
 
   " Python support.
   Plug 'davidhalter/jedi-vim', { 'for': 'python' }
@@ -111,6 +110,8 @@ endif
 
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
     Plug 'jeaye/color_coded'
+
+    packadd termdebug
   endif
 
   " F# IDE.
@@ -148,6 +149,7 @@ set tm=500
 set whichwrap+=<,>,h,l
 
 " Enable mouse.
+set ttymouse=xterm2
 set mouse=a
 
 
@@ -180,6 +182,7 @@ endif
 let g:airline_theme = 'bubblegum'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#ale#enabled = 1
 
 " Set color scheme
 if !has("gui_running")
@@ -436,6 +439,22 @@ let g:jedi#popup_on_dot = 0
 
 " Vim-flake8
 autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>
+
+" Check Python files with flake8 and pylint.
+let g:ale_linters = {'python': ['flake8']}
+" " Fix Python files with autopep8 and yapf.
+let g:ale_fixers = {'python': ['autopep8', 'yapf']}
+" Disable warnings about trailing whitespace for Python files.
+let b:ale_warn_about_trailing_whitespace = 0
+
+
+" ==============================================================================
+" => Javascript IDE.
+"
+let g:javascript_plugin_flow = 1
+let g:jsx_ext_required = 0
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
 
 
 " ==============================================================================

@@ -104,14 +104,8 @@ endif
     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 
-    " GDB integration.
-    Plug 'Shougo/vimproc.vim', {'do': 'make'}
-    Plug 'idanarye/vim-vebugger'
-
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
     Plug 'jeaye/color_coded'
-
-    packadd termdebug
   endif
 
   " F# IDE.
@@ -327,23 +321,8 @@ vnoremap <silent> # :call VisuauSelection('b')<CR>
 let NERDTreeIgnore = ['\.pyc$', '^__pycache__$']
 let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
-" Switch to the next buffer.
-map <C-Tab> :bn<CR>
-" Switch to the previous buffer.
-map <C-S-Tab> :bp<CR>
 
-
-" Define CUDA file extensions.
-au BufRead,BufNewFile *.cu set filetype=cpp
-au BufRead,BufNewFile *.hq set filetype=cpp
-
-" Search for the word under the cursor.
-autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" Shortcut key for code autoformatting.
-autocmd FileType c,cpp,objc,python noremap <C-K><C-F> :Autoformat<CR>
-
-
+" File explorers.
 function RangerExplorer()
     exec "silent !ranger --choosefile=/tmp/vim_ranger_current_file " . expand("%:p:h")
     if filereadable('/tmp/vim_ranger_current_file')
@@ -359,6 +338,16 @@ map <Leader>xx :Dispatch caja .<CR>
 " ==============================================================================
 " => C++ IDE
 
+" Define CUDA file extensions.
+au BufRead,BufNewFile *.cu set filetype=cpp
+au BufRead,BufNewFile *.hq set filetype=cpp
+
+" Search for the word under the cursor.
+autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" Shortcut key for code autoformatting.
+autocmd FileType c,cpp,objc,python noremap <C-K><C-F> :Autoformat<CR>
+
 " Editing options.
 autocmd FileType c,cpp,objc setlocal cindent
 autocmd FileType c,cpp,objc setlocal cino=(0,W4,g0,i-s,:0
@@ -373,11 +362,15 @@ let s:configfile_def = "'clang-format-6.0 -lines='.a:firstline.':'.a:lastline.' 
 let s:noconfigfile_def = "'clang-format-6.0 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
-" GDB integration.
-autocmd FileType c,cpp nnoremap <Leader>gb :VBGtoggleBreakpointThisLine<CR>
-autocmd FileType c,cpp nnoremap <Leader>gn :VBGstepOver<CR>
-autocmd FileType c,cpp nnoremap <Leader>gi :VBGstepIn<CR>
-autocmd FileType c,cpp nnoremap <Leader>gc :VBGcontinue<CR>
+packadd termdebug
+autocmd FileType c,cpp nnoremap <Leader>b :Break<CR>
+autocmd FileType c,cpp nnoremap <Leader>d :Delete<CR>
+autocmd FileType c,cpp nnoremap <Leader>s :Step<CR>
+autocmd FileType c,cpp nnoremap <Leader>n :Next<CR>
+autocmd FileType c,cpp nnoremap <Leader>o :Over<CR>
+autocmd FileType c,cpp nnoremap <Leader>c :Continue<CR>
+hi debugPC term=reverse ctermbg=darkblue guibg=darkblue
+hi debugBreakpoint term=reverse ctermbg=red guibg=red
 
 " ==============================================================================
 " => LaTeX IDE.

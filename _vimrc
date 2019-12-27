@@ -105,7 +105,6 @@ endif
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
-    " Plug 'jeaye/color_coded'
   endif
 
   " F# IDE.

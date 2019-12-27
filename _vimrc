@@ -86,6 +86,9 @@ endif
   " Protobuf
   Plug 'jdevera/vim-protobuf-syntax'
 
+  " Swift
+  Plug 'keith/swift.vim'
+
   " Latex support
   Plug 'xuhdev/vim-latex-live-preview'
 
@@ -101,12 +104,8 @@ endif
     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 
-    " GDB integration.
-    Plug 'Shougo/vimproc.vim', {'do': 'make'}
-    Plug 'idanarye/vim-vebugger'
-
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
-    Plug 'jeaye/color_coded'
+    " Plug 'jeaye/color_coded'
   endif
 
   " F# IDE.
@@ -154,6 +153,17 @@ set hid
 
 " Set extra options when running in GUI mode
 if has("gui_running")
+  " let g:terminal_ansi_colors = [
+  "       \ '#616e64', '#0d0a79',
+  "       \ '#6d610d', '#0a7373',
+  "       \ '#690d0a', '#6d696e',
+  "       \ '#0d0a6f', '#616e0d',
+  "       \ '#0a6479', '#6d0d0a',
+  "       \ '#617373', '#0d0a69',
+  "       \ '#6d690d', '#0a6e6f',
+  "       \ '#610d0a', '#6e6479',
+  "       \]
+
   set guioptions-=m
   set guioptions-=r
   set guioptions-=L
@@ -313,7 +323,7 @@ vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
 " Tree navigation
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.DS_Store', '\.pyc$', '__pycache__']
 let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
 " Switch to the next buffer.
@@ -325,6 +335,7 @@ map <C-S-Tab> :bp<CR>
 " Define CUDA file extensions.
 au BufRead,BufNewFile *.cu set filetype=cpp
 au BufRead,BufNewFile *.hq set filetype=cpp
+au BufRead,BufNewFile *.mm set filetype=objc
 
 " Search for the word under the cursor.
 autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
@@ -360,6 +371,7 @@ autocmd FileType c,cpp nnoremap <Leader>gcc :VBGcontinue<CR>
 " Help ALE parse C++ better.
 let g:ale_c_parse_compile_commands = 1
 let g:ale_linters = {'c': ['clang'], 'cpp': ['clang', 'g++']}
+let g:ale_cpp_clang_options = '-Wall -O2 -std=c++17 -x objective-c++ -fobjc-arc -Wno-c++17-extensions'
 
 " ==============================================================================
 " => LaTeX IDE.

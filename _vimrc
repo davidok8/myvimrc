@@ -105,7 +105,6 @@ endif
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
-    Plug 'jeaye/color_coded'
   endif
 
   " F# IDE.
@@ -358,8 +357,8 @@ autocmd FileType c,cpp,objc nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp,objc nnoremap <Leader>j :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.
-let s:configfile_def = "'clang-format-6.0 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
-let s:noconfigfile_def = "'clang-format-6.0 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
+let s:configfile_def = "'clang-format-8 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
+let s:noconfigfile_def = "'clang-format-8 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
 packadd termdebug

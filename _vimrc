@@ -90,6 +90,7 @@ endif
   Plug 'keith/swift.vim'
 
   " Latex support
+  Plug 'lervag/vimtex'
   Plug 'xuhdev/vim-latex-live-preview'
 
   " C++ IDE.
@@ -369,8 +370,8 @@ autocmd FileType c,cpp nnoremap <Leader>gcc :VBGcontinue<CR>
 
 " Help ALE parse C++ better.
 let g:ale_c_parse_compile_commands = 1
-let g:ale_linters = {'c': ['clang'], 'cpp': ['clang', 'g++']}
-let g:ale_cpp_clang_options = '-Wall -O2 -std=c++17 -x objective-c++ -fobjc-arc -Wno-c++17-extensions'
+let g:ale_linters = {'c': ['clang'], 'cpp': ['clang++, g++']}
+let g:ale_cpp_clang_options = '-Wall -O2 -std=c++17 -x objective-c++ -fobjc-arc'
 
 " ==============================================================================
 " => LaTeX IDE.

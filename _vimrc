@@ -17,6 +17,9 @@ endif
   " Asynchronous command support.
   Plug 'tpope/vim-dispatch'
 
+  " Easily switch buffer and other things.
+  Plug 'tpope/vim-unimpaired'
+
   " ========================================================================== "
   " Vim theme.
   "
@@ -302,8 +305,6 @@ map <leader>tn :tabnew<CR>
 map <leader>to :tabonly<CR>
 map <leader>tc :tabclose<CR>
 map <leader>tm :tabmove
-map <leader>nn :bp<CR>
-map <leader>pp :bn<CR>
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<CR>:pwd<CR>
@@ -360,6 +361,10 @@ autocmd FileType c,cpp,objc nnoremap <Leader>j :YcmCompleter GoTo<CR>
 let s:configfile_def = "'clang-format-8 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
 let s:noconfigfile_def = "'clang-format-8 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
+
+" Use clang-rename.
+let g:clang_rename_path = "/usr/bin/clang-rename-8"
+autocmd FileType c,cpp nnoremap <leader>cr :py3file /home/david/.vim/clang-rename.py<cr>
 
 packadd termdebug
 autocmd FileType c,cpp nnoremap <Leader>b :Break<CR>

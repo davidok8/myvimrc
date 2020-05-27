@@ -17,11 +17,23 @@ endif
   " Asynchronous command support.
   Plug 'tpope/vim-dispatch'
 
+  " Easily switch buffer and other things.
+  Plug 'tpope/vim-unimpaired'
+  " Even better...
+  Plug 'vim-ctrlspace/vim-ctrlspace'
+
+  " Multi-colored cursor.
+  Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
+  Plug 'majutsushi/tagbar'
+
   " ========================================================================== "
   " Vim theme.
   "
   " Solarized colorscheme.
   Plug 'altercation/vim-colors-solarized'
+  Plug 'rakr/vim-one'
+  Plug 'kristijanhusak/vim-hybrid-material'
   " For better looking ViM status.
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
@@ -58,8 +70,7 @@ endif
 
   " ========================================================================== "
   " Syntax checker
-  "Plug 'scrooloose/syntastic'
-  Plug 'w0rp/ale'
+  Plug 'w0rp/ale', { 'for': ['html', 'javascript', 'python'] }
 
   " Multi-language code autoformatting
   Plug 'Chiel92/vim-autoformat'
@@ -70,10 +81,9 @@ endif
   Plug 'mattn/emmet-vim'
 
   " Javascript support.
-  Plug 'jelera/vim-javascript-syntax', { 'for': ['html', 'javascript'] }
   Plug 'pangloss/vim-javascript', { 'for': ['html', 'javascript'] }
-  Plug 'kchmck/vim-coffee-script', { 'for': ['html', 'javascript'] }
-  Plug 'marijnh/tern_for_vim', { 'for': ['html', 'javascript'] }
+  Plug 'mxw/vim-jsx', { 'for': ['html', 'javascript'] }
+
 
   " Python support.
   Plug 'davidhalter/jedi-vim', { 'for': 'python' }
@@ -82,6 +92,9 @@ endif
 
   " Shell script support.
   Plug 'vim-scripts/sh.vim--Cla'
+
+  " Powershell script support.
+  Plug 'PProvost/vim-ps1'
 
   " Protobuf
   Plug 'jdevera/vim-protobuf-syntax'
@@ -116,6 +129,10 @@ endif
 
   " Haskell IDE.
   Plug 'dag/vim2hs'
+
+  " Rust IDE.
+  Plug 'rust-lang/rust.vim'
+  Plug 'racer-rust/vim-racer'
 call plug#end()
 
 
@@ -139,6 +156,7 @@ set tm=500
 set whichwrap+=<,>,h,l
 
 " Enable mouse.
+set ttymouse=xterm2
 set mouse=a
 
 
@@ -172,7 +190,7 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2") || has("gui_gtk3")
-    set guifont=Hack\ Regular\ 10
+    set guifont=Hack\ Regular\ 9
   elseif has("gui_macvim")
     set guifont=Meslo\ LG\ M\ for\ Powerline:h12
   elseif has("gui_win32")
@@ -182,6 +200,7 @@ endif
 let g:airline_theme = 'bubblegum'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#ale#enabled = 1
 
 " Set color scheme
 if !has("gui_running")
@@ -240,7 +259,7 @@ set noswapfile
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 " Use Unix as the standard file type
-set ffs=unix,dos,mac
+set ffs=unix
 " Use spaces instead of tabs
 set expandtab
 " 2 spaces per tabs.
@@ -308,8 +327,6 @@ map <leader>tn :tabnew<CR>
 map <leader>to :tabonly<CR>
 map <leader>tc :tabclose<CR>
 map <leader>tm :tabmove
-map <leader>nn :bp<CR>
-map <leader>pp :bn<CR>
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<CR>:pwd<CR>
@@ -326,11 +343,23 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 let NERDTreeIgnore = ['\.DS_Store', '\.pyc$', '__pycache__']
 let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
-" Switch to the next buffer.
-map <C-Tab> :bn<CR>
-" Switch to the previous buffer.
-map <C-S-Tab> :bp<CR>
 
+" File explorers.
+function RangerExplorer()
+    exec "silent !ranger --choosefile=/tmp/vim_ranger_current_file " . expand("%:p:h")
+    if filereadable('/tmp/vim_ranger_current_file')
+        exec 'edit ' . system('cat /tmp/vim_ranger_current_file')
+        call system('rm /tmp/vim_ranger_current_file')
+    endif
+    redraw!
+endfun
+map <Leader>xr :call RangerExplorer()<CR>
+map <Leader>xx :Dispatch caja .<CR>
+
+map <Leader>tt :TagbarToggle<CR>
+
+" ==============================================================================
+" => C++ IDE
 
 " Define CUDA file extensions.
 au BufRead,BufNewFile *.cu set filetype=cpp
@@ -343,11 +372,6 @@ autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " Shortcut key for code autoformatting.
 autocmd FileType c,cpp,objc,python noremap <C-K><C-F> :Autoformat<CR>
 
-
-
-" ==============================================================================
-" => C++ IDE
-
 " Editing options.
 autocmd FileType c,cpp,objc setlocal cindent
 autocmd FileType c,cpp,objc setlocal cino=(0,W4,g0,i-s,:0
@@ -358,15 +382,23 @@ autocmd FileType c,cpp,objc nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp,objc nnoremap <Leader>j :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.
-let s:configfile_def = "'clang-format -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
-let s:noconfigfile_def = "'clang-format -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
+let s:configfile_def = "'clang-format-8 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
+let s:noconfigfile_def = "'clang-format-8 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
-" GDB integration.
-autocmd FileType c,cpp nnoremap <Leader>gbb :VBGtoggleBreakpointThisLine<CR>
-autocmd FileType c,cpp nnoremap <Leader>gnn :VBGstepOver<CR>
-autocmd FileType c,cpp nnoremap <Leader>gii :VBGstepIn<CR>
-autocmd FileType c,cpp nnoremap <Leader>gcc :VBGcontinue<CR>
+" Use clang-rename.
+let g:clang_rename_path = "/usr/bin/clang-rename-8"
+autocmd FileType c,cpp nnoremap <leader>cr :py3file /home/david/.vim/clang-rename.py<cr>
+
+packadd termdebug
+autocmd FileType c,cpp nnoremap <Leader>b :Break<CR>
+autocmd FileType c,cpp nnoremap <Leader>d :Delete<CR>
+autocmd FileType c,cpp nnoremap <Leader>s :Step<CR>
+autocmd FileType c,cpp nnoremap <Leader>n :Next<CR>
+autocmd FileType c,cpp nnoremap <Leader>o :Over<CR>
+autocmd FileType c,cpp nnoremap <Leader>c :Continue<CR>
+hi debugPC term=reverse ctermbg=darkblue guibg=darkblue
+hi debugBreakpoint term=reverse ctermbg=red guibg=red
 
 " Help ALE parse C++ better.
 let g:ale_c_parse_compile_commands = 1
@@ -433,3 +465,31 @@ let g:jedi#popup_on_dot = 0
 
 " Vim-flake8
 autocmd FileType python map <buffer> <C-b> :call Flake8()<CR>
+
+" Check Python files with flake8 and pylint.
+let g:ale_linters = {'python': ['flake8']}
+" " Fix Python files with autopep8 and yapf.
+let g:ale_fixers = {'python': ['autopep8', 'yapf']}
+" Disable warnings about trailing whitespace for Python files.
+let b:ale_warn_about_trailing_whitespace = 0
+
+
+" ==============================================================================
+" => Javascript IDE.
+"
+let g:javascript_plugin_flow = 1
+let g:jsx_ext_required = 0
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+
+
+" ==============================================================================
+" => Rust IDE.
+"
+let g:rustfmt_autosave = 1
+
+
+" ==============================================================================
+" => Preview images.
+"
+:autocmd BufEnter *.png,*.jpg,*gif,*.tif exec "! kitty +kitten icat ".expand("%") | :bw

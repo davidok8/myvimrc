@@ -19,6 +19,13 @@ endif
 
   " Easily switch buffer and other things.
   Plug 'tpope/vim-unimpaired'
+  " Even better...
+  Plug 'vim-ctrlspace/vim-ctrlspace'
+
+  " Multi-colored cursor.
+  Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
+  Plug 'majutsushi/tagbar'
 
   " ========================================================================== "
   " Vim theme.
@@ -334,6 +341,7 @@ endfun
 map <Leader>xr :call RangerExplorer()<CR>
 map <Leader>xx :Dispatch caja .<CR>
 
+map <Leader>tt :TagbarToggle<CR>
 
 " ==============================================================================
 " => C++ IDE
@@ -458,3 +466,9 @@ let g:ale_lint_on_text_changed = 0
 " => Rust IDE.
 "
 let g:rustfmt_autosave = 1
+
+
+" ==============================================================================
+" => Preview images.
+"
+:autocmd BufEnter *.png,*.jpg,*gif,*.tif exec "! kitty +kitten icat ".expand("%") | :bw

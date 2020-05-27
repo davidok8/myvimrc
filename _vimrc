@@ -46,7 +46,9 @@ endif
   " Tree navigation for file browsing.
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   " Full path fuzz file, buffer, mru, tag, ... finder.
-  Plug 'ctrlpvim/ctrlp.vim'
+  " Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
   " For quick string search
   Plug 'rking/ag.vim'
   " Enhanced tab.
@@ -343,6 +345,8 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 let NERDTreeIgnore = ['\.DS_Store', '\.pyc$', '__pycache__']
 let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
+
+map <C-p> :FZF<CR>
 
 " File explorers.
 function RangerExplorer()

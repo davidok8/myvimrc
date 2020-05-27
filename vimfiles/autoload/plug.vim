@@ -885,13 +885,7 @@ function! s:bang(cmd, ...)
     "        but it won't work on Windows.
     let cmd = a:0 ? s:with_cd(a:cmd, a:1) : a:cmd
     if s:is_win
-<<<<<<< HEAD
       let [batchfile, cmd] = s:batchfile(cmd)
-=======
-      let batchfile = tempname().'.bat'
-      call writefile(["@echo off\r", cmd . "\r"], batchfile)
-      let cmd = batchfile
->>>>>>> fe54751a6e7b0926b6d430d211b4da9b6a2181ca
     endif
     let g:_plug_bang = (s:is_win && has('gui_running') ? 'silent ' : '').'!'.escape(cmd, '#!%')
     execute "normal! :execute g:_plug_bang\<cr>\<cr>"
@@ -948,6 +942,7 @@ function! s:do(pull, force, todo)
         endif
       elseif type == s:TYPE.funcref
         try
+          call s:load_plugin(spec)
           let status = installed ? 'installed' : (updated ? 'updated' : 'unchanged')
           call spec.do({ 'name': name, 'status': status, 'force': a:force })
         catch
@@ -1291,15 +1286,6 @@ function! s:spawn(name, cmd, opts)
   let job = { 'name': a:name, 'running': 1, 'error': 0, 'lines': [''],
             \ 'new': get(a:opts, 'new', 0) }
   let s:jobs[a:name] = job
-<<<<<<< HEAD
-=======
-  let cmd = has_key(a:opts, 'dir') ? s:with_cd(a:cmd, a:opts.dir) : a:cmd
-  if !empty(job.batchfile)
-    call writefile(["@echo off\r", cmd . "\r"], job.batchfile)
-    let cmd = job.batchfile
-  endif
-  let argv = add(s:is_win ? ['cmd', '/c'] : ['sh', '-c'], cmd)
->>>>>>> fe54751a6e7b0926b6d430d211b4da9b6a2181ca
 
   if s:nvim
     if has_key(a:opts, 'dir')
@@ -2166,7 +2152,6 @@ function! s:system(cmd, ...)
   let batchfile = ''
   try
     let [sh, shellcmdflag, shrd] = s:chsh(1)
-<<<<<<< HEAD
     if type(a:cmd) == s:TYPE.list
       " Neovim's system() supports list argument to bypass the shell
       " but it cannot set the working directory for the command.
@@ -2180,13 +2165,6 @@ function! s:system(cmd, ...)
       endif
     else
       let cmd = a:cmd
-=======
-    let cmd = a:0 > 0 ? s:with_cd(a:cmd, a:1) : a:cmd
-    if s:is_win
-      let batchfile = tempname().'.bat'
-      call writefile(["@echo off\r", cmd . "\r"], batchfile)
-      let cmd = batchfile
->>>>>>> fe54751a6e7b0926b6d430d211b4da9b6a2181ca
     endif
     if a:0 > 0
       let cmd = s:with_cd(cmd, a:1, type(a:cmd) != s:TYPE.list)
@@ -2528,13 +2506,7 @@ function! s:preview_commit()
     let [sh, shellcmdflag, shrd] = s:chsh(1)
     let cmd = 'cd '.plug#shellescape(g:plugs[name].dir).' && git show --no-color --pretty=medium '.sha
     if s:is_win
-<<<<<<< HEAD
       let [batchfile, cmd] = s:batchfile(cmd)
-=======
-      let batchfile = tempname().'.bat'
-      call writefile(["@echo off\r", cmd . "\r"], batchfile)
-      let cmd = batchfile
->>>>>>> fe54751a6e7b0926b6d430d211b4da9b6a2181ca
     endif
     execute 'silent %!' cmd
   finally

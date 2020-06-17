@@ -27,6 +27,8 @@ endif
 
   Plug 'majutsushi/tagbar'
 
+  Plug 'junegunn/goyo.vim'
+
   " ========================================================================== "
   " Vim theme.
   "
@@ -46,7 +48,6 @@ endif
   " Tree navigation for file browsing.
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   " Full path fuzz file, buffer, mru, tag, ... finder.
-  " Plug 'ctrlpvim/ctrlp.vim'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
   " For quick string search
@@ -103,6 +104,9 @@ endif
 
   " Swift
   Plug 'keith/swift.vim'
+
+  " QML
+  Plug 'peterhoeg/vim-qml'
 
   " Latex support
   Plug 'lervag/vimtex'
@@ -344,8 +348,8 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 " Tree navigation
 let NERDTreeIgnore = ['\.DS_Store', '\.pyc$', '__pycache__']
 let NERDTreeMouseMode = 3
-map <S-Tab> :NERDTreeToggle<CR>
 
+map <S-Tab> :NERDTreeToggle<CR>
 map <C-p> :FZF<CR>
 
 " File explorers.
@@ -357,10 +361,11 @@ function RangerExplorer()
     endif
     redraw!
 endfun
+
 map <Leader>xr :call RangerExplorer()<CR>
 map <Leader>xx :Dispatch caja .<CR>
-
 map <Leader>tt :TagbarToggle<CR>
+map <Leader>tg :Goyo<CR>
 
 " ==============================================================================
 " => C++ IDE
@@ -386,8 +391,8 @@ autocmd FileType c,cpp,objc nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp,objc nnoremap <Leader>j :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.
-let s:configfile_def = "'clang-format-8 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
-let s:noconfigfile_def = "'clang-format-8 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
+let s:configfile_def = "'clang-format -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
+let s:noconfigfile_def = "'clang-format -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
 " Use clang-rename.
@@ -496,4 +501,4 @@ let g:rustfmt_autosave = 1
 " ==============================================================================
 " => Preview images.
 "
-:autocmd BufEnter *.png,*.jpg,*gif,*.tif exec "! kitty +kitten icat ".expand("%") | :bw
+:autocmd BufEnter *.png,*.jpg,*gif,*.tif exec "! /Applications/kitty.app/Contents/MacOS/kitty +kitten icat ".expand("%") | :bw

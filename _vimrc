@@ -23,9 +23,13 @@ endif
   Plug 'vim-ctrlspace/vim-ctrlspace'
 
   " Multi-colored cursor.
-  Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+  " Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
-  Plug 'majutsushi/tagbar'
+  " Distraction-free editing.
+  Plug 'junegunn/goyo.vim'
+
+  " Conversion from camelcase to snake case etc.
+  Plug 'tpope/vim-abolish'
 
   " ========================================================================== "
   " Vim theme.
@@ -47,7 +51,6 @@ endif
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   Plug 'PhilRunninger/nerdtree-visual-selection'
   " Full path fuzz file, buffer, mru, tag, ... finder.
-  " Plug 'ctrlpvim/ctrlp.vim'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
   " For quick string search
@@ -78,15 +81,18 @@ endif
   " Multi-language code autoformatting
   Plug 'Chiel92/vim-autoformat'
 
+  " Bar on the right listing variables, functions for any languages.
+  Plug 'majutsushi/tagbar'
+
   " Markdown.
   Plug 'plasticboy/vim-markdown'
+
   " Fast HMTL editing.
   Plug 'mattn/emmet-vim'
 
   " Javascript support.
   Plug 'pangloss/vim-javascript', { 'for': ['html', 'javascript'] }
   Plug 'mxw/vim-jsx', { 'for': ['html', 'javascript'] }
-
 
   " Python support.
   Plug 'davidhalter/jedi-vim', { 'for': 'python' }
@@ -113,7 +119,7 @@ endif
   if has("unix")
     function! BuildYCM(info)
       if a:info.status == 'installed' || a:info.force
-        !./install.sh --clang-completer
+        !./install.py --clang-completer
       endif
     endfunction
 
@@ -362,6 +368,7 @@ map <Leader>xr :call RangerExplorer()<CR>
 map <Leader>xx :Dispatch caja .<CR>
 
 map <Leader>tt :TagbarToggle<CR>
+map <Leader>tg :Goyo<CR>
 
 " ==============================================================================
 " => C++ IDE
@@ -370,6 +377,7 @@ map <Leader>tt :TagbarToggle<CR>
 au BufRead,BufNewFile *.cu set filetype=cpp
 au BufRead,BufNewFile *.hq set filetype=cpp
 au BufRead,BufNewFile *.mm set filetype=objc
+au BufRead,BufNewFile *.qrc set filetype=html
 
 " Search for the word under the cursor.
 autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>

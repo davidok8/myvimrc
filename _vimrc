@@ -47,6 +47,7 @@ endif
   Plug 'drmikehenry/vim-fontsize'
   " Tree navigation for file browsing.
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+  Plug 'PhilRunninger/nerdtree-visual-selection'
   " Full path fuzz file, buffer, mru, tag, ... finder.
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 

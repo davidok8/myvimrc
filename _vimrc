@@ -31,8 +31,6 @@ endif
   " Conversion from camelcase to snake case etc.
   Plug 'tpope/vim-abolish'
 
-  Plug 'junegunn/goyo.vim'
-
   " ========================================================================== "
   " Vim theme.
   "

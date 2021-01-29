@@ -23,11 +23,13 @@ endif
   Plug 'vim-ctrlspace/vim-ctrlspace'
 
   " Multi-colored cursor.
-  Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+  " Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
-  Plug 'majutsushi/tagbar'
-
+  " Distraction-free editing.
   Plug 'junegunn/goyo.vim'
+
+  " Conversion from camelcase to snake case etc.
+  Plug 'tpope/vim-abolish'
 
   " ========================================================================== "
   " Vim theme.
@@ -78,8 +80,12 @@ endif
   " Multi-language code autoformatting
   Plug 'Chiel92/vim-autoformat'
 
+  " Bar on the right listing variables, functions for any languages.
+  Plug 'majutsushi/tagbar'
+
   " Markdown.
   Plug 'plasticboy/vim-markdown'
+
   " Fast HMTL editing.
   Plug 'mattn/emmet-vim'
 
@@ -118,7 +124,7 @@ endif
   if has("unix")
     function! BuildYCM(info)
       if a:info.status == 'installed' || a:info.force
-        !./install.sh --clang-completer
+        !./install.py --clang-completer
       endif
     endfunction
 
@@ -378,6 +384,7 @@ map <Leader>tg :Goyo<CR>
 au BufRead,BufNewFile *.cu set filetype=cpp
 au BufRead,BufNewFile *.hq set filetype=cpp
 au BufRead,BufNewFile *.mm set filetype=objc
+au BufRead,BufNewFile *.qrc set filetype=html
 
 " Search for the word under the cursor.
 autocmd FileType c,cpp,objc,python nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>

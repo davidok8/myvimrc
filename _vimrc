@@ -93,7 +93,7 @@ endif
   Plug 'pangloss/vim-javascript', { 'for': ['html', 'javascript'] }
   Plug 'mxw/vim-jsx', { 'for': ['html', 'javascript'] }
 
-  # GLSL support.
+  " GLSL support.
   Plug 'tikhomirov/vim-glsl'
 
   " Python support.

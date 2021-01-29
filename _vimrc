@@ -34,8 +34,7 @@ endif
   "
   " Solarized colorscheme.
   Plug 'altercation/vim-colors-solarized'
-  Plug 'rakr/vim-one'
-  Plug 'kristijanhusak/vim-hybrid-material'
+  Plug 'lifepillar/vim-solarized8'
   " For better looking ViM status.
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
@@ -88,6 +87,8 @@ endif
   Plug 'pangloss/vim-javascript', { 'for': ['html', 'javascript'] }
   Plug 'mxw/vim-jsx', { 'for': ['html', 'javascript'] }
 
+  # GLSL support.
+  Plug 'tikhomirov/vim-glsl'
 
   " Python support.
   Plug 'davidhalter/jedi-vim', { 'for': 'python' }
@@ -126,6 +127,8 @@ endif
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 
     Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
+
+    Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
   endif
 
   " F# IDE.
@@ -197,9 +200,9 @@ if has("gui_running")
   set guitablabel=%M\ %t
 
   if has("gui_gtk2") || has("gui_gtk3")
-    set guifont=Hack\ Regular\ 9
+    set guifont=JetBrains\ Mono\ Medium:h9
   elseif has("gui_macvim")
-    set guifont=Meslo\ LG\ M\ for\ Powerline:h12
+    set guifont=JetBrains\ Mono\ Medium:h12
   elseif has("gui_win32")
     set guifont=Consolas:h11:cANSI
   endif
@@ -209,14 +212,14 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ale#enabled = 1
 
-" Set color scheme
+" Set solarized colorscheme
 if !has("gui_running")
   let g:solarized_termcolors=65536
   let g:solarized_termtrans=1
 endif
 
-colorscheme solarized
 set background=dark
+colorscheme solarized8
 
 
 " ==============================================================================

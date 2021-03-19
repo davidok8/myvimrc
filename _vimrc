@@ -41,6 +41,9 @@ endif
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
 
+  " CtrlP support.
+  Plug 'ryanoasis/vim-devicons'
+
   " ========================================================================== "
   " Additional GUI and behavioral features.
   "
@@ -51,6 +54,15 @@ endif
   Plug 'PhilRunninger/nerdtree-visual-selection'
   " Full path fuzz file, buffer, mru, tag, ... finder.
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
+  " Better bar support.
+  Plug 'kyazdani42/nvim-web-devicons'
+  Plug 'romgrk/barbar.nvim'
+
+  " Telescope.
+  Plug 'nvim-lua/popup.nvim'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
 
   " For quick string search
   Plug 'rking/ag.vim'
@@ -172,7 +184,9 @@ set tm=500
 set whichwrap+=<,>,h,l
 
 " Enable mouse.
-set ttymouse=xterm2
+if !has('nvim')
+  set ttymouse=xterm2
+endif
 set mouse=a
 
 
@@ -187,17 +201,6 @@ set hid
 
 " Set extra options when running in GUI mode
 if has("gui_running")
-  " let g:terminal_ansi_colors = [
-  "       \ '#616e64', '#0d0a79',
-  "       \ '#6d610d', '#0a7373',
-  "       \ '#690d0a', '#6d696e',
-  "       \ '#0d0a6f', '#616e0d',
-  "       \ '#0a6479', '#6d0d0a',
-  "       \ '#617373', '#0d0a69',
-  "       \ '#6d690d', '#0a6e6f',
-  "       \ '#610d0a', '#6e6479',
-  "       \]
-
   set guioptions-=m
   set guioptions-=r
   set guioptions-=L
@@ -330,6 +333,12 @@ map k gk
 
 let mapleader=";"
 
+if has('nvim')
+  let g:CtrlSpaceDefaultMappingKey = "<C-space> "
+
+  tnoremap <ESC> <C-\><C-n>
+endif
+
 " Disable highlight when <leader><CR> is pressed.
 map <silent> <leader><CR> :noh<CR>
 
@@ -362,20 +371,25 @@ let NERDTreeMouseMode = 3
 map <S-Tab> :NERDTreeToggle<CR>
 map <C-p> :FZF<CR>
 
-" File explorers.
-function RangerExplorer()
-    exec "silent !ranger --choosefile=/tmp/vim_ranger_current_file " . expand("%:p:h")
-    if filereadable('/tmp/vim_ranger_current_file')
-        exec 'edit ' . system('cat /tmp/vim_ranger_current_file')
-        call system('rm /tmp/vim_ranger_current_file')
-    endif
-    redraw!
-endfun
-
-map <Leader>xr :call RangerExplorer()<CR>
-map <Leader>xx :Dispatch caja .<CR>
 map <Leader>tt :TagbarToggle<CR>
 map <Leader>tg :Goyo<CR>
+
+
+if has('nvim')
+  " Find files using Telescope command-line sugar.
+  nnoremap <leader>ff <cmd>Telescope find_files<cr>
+  nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+  nnoremap <leader>fb <cmd>Telescope buffers<cr>
+  nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+  " Using lua functions
+  nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+  nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+  nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+  nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+endif
+
+
 
 " ==============================================================================
 " => C++ IDE

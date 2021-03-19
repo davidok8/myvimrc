@@ -36,7 +36,7 @@ endif
   "
   " Solarized colorscheme.
   Plug 'altercation/vim-colors-solarized'
-  Plug 'lifepillar/vim-solarized8'
+  Plug 'chriskempson/base16-vim'
   " For better looking ViM status.
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
@@ -227,8 +227,7 @@ if !has("gui_running")
   let g:solarized_termtrans=1
 endif
 
-set background=dark
-colorscheme solarized8
+colorscheme base16-solarized-dark
 
 
 " ==============================================================================

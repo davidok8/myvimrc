@@ -59,11 +59,6 @@ endif
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'romgrk/barbar.nvim'
 
-  " Telescope.
-  Plug 'nvim-lua/popup.nvim'
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'nvim-telescope/telescope.nvim'
-
   " For quick string search
   Plug 'rking/ag.vim'
   " Enhanced tab.
@@ -224,12 +219,8 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#ale#enabled = 1
 
-" Set solarized colorscheme
-if !has("gui_running")
-  let g:solarized_termcolors=65536
-  let g:solarized_termtrans=1
-endif
-
+" Needed for base16 colorschemes.
+set termguicolors
 colorscheme base16-solarized-dark
 
 
@@ -377,26 +368,11 @@ map <Leader>tt :TagbarToggle<CR>
 map <Leader>tg :Goyo<CR>
 
 
-if has('nvim')
-  " Find files using Telescope command-line sugar.
-  nnoremap <leader>ff <cmd>Telescope find_files<cr>
-  nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-  nnoremap <leader>fb <cmd>Telescope buffers<cr>
-  nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-  " Using lua functions
-  nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-  nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-  nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-  nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
-endif
-
-
-
 " ==============================================================================
 " => C++ IDE
 
 " Define CUDA file extensions.
+au BufRead,BufNewFile *.metal set filetype=cpp
 au BufRead,BufNewFile *.cu set filetype=cpp
 au BufRead,BufNewFile *.hq set filetype=cpp
 au BufRead,BufNewFile *.mm set filetype=objc
@@ -414,7 +390,6 @@ autocmd FileType c,cpp,objc setlocal cino=(0,W4,g0,i-s,:0
 autocmd FileType c,cpp,objc setlocal foldmethod=syntax
 
 " Jump to definition.
-autocmd FileType c,cpp,objc nnoremap <Leader><F2> :YcmCompleter GoTo<CR>
 autocmd FileType c,cpp,objc nnoremap <Leader>j :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.

@@ -138,8 +138,6 @@ endif
     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
     autocmd! User YouCompleteMe call youcompleteme#Enable()
 
-    Plug 'realincubus/vim-clang-refactor', { 'for': 'cpp' }
-
     Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
   endif
 
@@ -393,12 +391,12 @@ autocmd FileType c,cpp,objc setlocal foldmethod=syntax
 autocmd FileType c,cpp,objc nnoremap <Leader>j :YcmCompleter GoTo<CR>
 
 " Use clang-format in C-family based code.
-let s:configfile_def = "'clang-format-10 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
-let s:noconfigfile_def = "'clang-format-10 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
+let s:configfile_def = "'clang-format-11 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=file'"
+let s:noconfigfile_def = "'clang-format-11 -lines='.a:firstline.':'.a:lastline.' --assume-filename='.bufname('%').' -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, '.(&textwidth ? 'ColumnLimit: '.&textwidth.', ' : '').(&expandtab ? 'UseTab: Never, IndentWidth: '.shiftwidth() : 'UseTab: Always').'}\"'"
 let g:formatdef_clangformat = "g:ClangFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 
 " Use clang-rename.
-let g:clang_rename_path = "/usr/bin/clang-rename-8"
+let g:clang_rename_path = "/usr/bin/clang-rename-11"
 autocmd FileType c,cpp nnoremap <leader>cr :py3file /home/david/.vim/clang-rename.py<cr>
 
 packadd termdebug
